@@ -1,0 +1,9 @@
+
+State Machine - |DE1_Audio_AdcDac|audio_codec_controller:audioCodecController|currentState
+Name currentState.stop currentState.incrementMuxSelectBits currentState.turnOffi2cControl currentState.checkAcknowledge currentState.transmit currentState.resetState 
+currentState.resetState 0 0 0 0 0 0 
+currentState.transmit 0 0 0 0 1 1 
+currentState.checkAcknowledge 0 0 0 1 0 1 
+currentState.turnOffi2cControl 0 0 1 0 0 1 
+currentState.incrementMuxSelectBits 0 1 0 0 0 1 
+currentState.stop 1 0 0 0 0 1 

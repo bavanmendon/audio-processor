@@ -1,0 +1,19 @@
+
+
+/home/bavanmendon/intelFPGA_lite/audioProcessor/DE1_Audio_AdcDac/audioPLL.vhd
+
+Mar 05 01PM:51:53>: Error in CNX file format.
+
+Error messages are listed in file
+/home/bavanmendon/intelFPGA_lite/audioProcessor/DE1_Audio_AdcDac/audioPLL.cnxerr.
+
+Can't create the custom megafunction variation file(s)
+
+/home/bavanmendon/intelFPGA_lite/audioProcessor/DE1_Audio_AdcDac/audioPLL.vhd
+
+Mar 05 02PM:30:14>: Error in CNX file format.
+
+Error messages are listed in file
+/home/bavanmendon/intelFPGA_lite/audioProcessor/DE1_Audio_AdcDac/audioPLL.cnxerr.
+
+Can't create the custom megafunction variation file(s)

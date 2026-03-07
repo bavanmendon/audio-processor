@@ -1,0 +1,73 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+
+-- D Flip Flop
+ENTITY my_dff IS
+    PORT(clkd, rstd, bd: IN std_logic;
+         qd: OUT std_logic);
+END my_dff;
+
+ARCHITECTURE beh OF my_dff IS
+BEGIN
+    PROCESS(clkd, rstd)
+    BEGIN
+        IF rstd = '0' THEN
+				qd <= '0';
+		  ELSIF rising_edge(clkd) THEN
+            qd <= bd;
+        END IF;
+    END PROCESS;
+END beh;
+
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+
+ENTITY audioProcessor IS
+    PORT(clk, rst, volumeUpButton, volumeDownButton, muteButton: IN std_logic;
+			bassStageSwitch, trebleStageSwitch: IN std_logic_vector(1 DOWNTO 0);
+         q: OUT std_logic_vector(7 DOWNTO 0));
+END ledCounter;
+
+ARCHITECTURE struct OF ledCounter IS  
+   -- Button synchronization and edge detection
+   SIGNAL btn_sync, btn_prev, btn_pulse : std_logic;
+   
+   -- DFF data inputs and outputs
+   SIGNAL q_o  : std_logic_vector(7 DOWNTO 0);
+   SIGNAL d_in : std_logic_vector(7 DOWNTO 0);
+   
+BEGIN 
+   -- 1. BUTTON EDGE DETECTION (2 DFF synchronizers)
+   SYNC1: ENTITY work.my_dff 
+      PORT MAP(clkd => clk, rstd => rst, bd => b, qd => btn_sync);
+   
+   SYNC2: ENTITY work.my_dff 
+      PORT MAP(clkd => clk, rstd => rst, bd => btn_sync, qd => btn_prev);
+   
+	PROCESS(b)
+	BEGIN
+		IF fallingc_edge(b) THEN
+			-- Single pulse when button pressed (b: 1→0)
+			btn_pulse <= btn_prev AND NOT btn_sync;
+		END IF;
+	END PROCESS;
+	
+	-- 2. CUMULATIVE LOGIC (one more LED per pulse)
+		GEN_CUMULATIVE: FOR i IN 0 TO 7 GENERATE
+		d_in(i) <= btn_pulse OR q_o(i);  -- New pulse OR hold previous
+		END GENERATE;
+   
+   -- 3. 8 MAIN LED DFFs (your exact instantiations)
+   DFF0: ENTITY work.my_dff PORT MAP(clkd => clk, rstd => rst, bd => d_in(0), qd => q_o(0));
+   DFF1: ENTITY work.my_dff PORT MAP(clkd => clk, rstd => rst, bd => d_in(1), qd => q_o(1));
+   DFF2: ENTITY work.my_dff PORT MAP(clkd => clk, rstd => rst, bd => d_in(2), qd => q_o(2));
+   DFF3: ENTITY work.my_dff PORT MAP(clkd => clk, rstd => rst, bd => d_in(3), qd => q_o(3));
+   DFF4: ENTITY work.my_dff PORT MAP(clkd => clk, rstd => rst, bd => d_in(4), qd => q_o(4));
+   DFF5: ENTITY work.my_dff PORT MAP(clkd => clk, rstd => rst, bd => d_in(5), qd => q_o(5));
+   DFF6: ENTITY work.my_dff PORT MAP(clkd => clk, rstd => rst, bd => d_in(6), qd => q_o(6));
+   DFF7: ENTITY work.my_dff PORT MAP(clkd => clk, rstd => rst, bd => d_in(7), qd => q_o(7));
+   
+   -- Output to LEDs (q_o='0' = LED ON for pull-ups)
+   q <= q_o;
+   
+END struct;

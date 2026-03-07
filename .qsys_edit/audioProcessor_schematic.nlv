@@ -1,0 +1,32 @@
+# # File gsaved with Nlview version 6.3.8  2013-12-19 bk=1.2992 VDI=34 GEI=35
+# 
+preplace inst audioProcessor.trebleStageSwitch -pg 1 -lvl 3 -y 540
+preplace inst audioProcessor.bassStageSwitch -pg 1 -lvl 3 -y 920
+preplace inst audioProcessor.volumeUpButton -pg 1 -lvl 3 -y 820
+preplace inst audioProcessor.greenLEDs -pg 1 -lvl 3 -y 240
+preplace inst audioProcessor.redLEDs -pg 1 -lvl 3 -y 440
+preplace inst audioProcessor.volumeDownButton -pg 1 -lvl 3 -y 640
+preplace inst audioProcessor.NIOSAudioProcessor.reset_bridge -pg 1
+preplace inst audioProcessor.NIOSAudioProcessor.clock_bridge -pg 1
+preplace inst audioProcessor.clk_50 -pg 1 -lvl 2 -y 220
+preplace inst audioProcessor.JTAG -pg 1 -lvl 3 -y 140
+preplace inst audioProcessor -pg 1 -lvl 1 -y 40 -regy -20
+preplace inst audioProcessor.NIOSAudioProcessor.cpu -pg 1
+preplace inst audioProcessor.muteButton -pg 1 -lvl 3 -y 340
+preplace inst audioProcessor.SRAM -pg 1 -lvl 3 -y 740
+preplace inst audioProcessor.NIOSAudioProcessor -pg 1 -lvl 1 -y 50
+preplace netloc EXPORT<net_container>audioProcessor</net_container>(SLAVE)volumeUpButton.external_connection,(SLAVE)audioProcessor.volume_up_button) 1 0 3 NJ 850 NJ 850 NJ
+preplace netloc FAN_OUT<net_container>audioProcessor</net_container>(SLAVE)trebleStageSwitch.clk,(SLAVE)JTAG.clk,(SLAVE)bassStageSwitch.clk,(SLAVE)NIOSAudioProcessor.clk,(SLAVE)muteButton.clk,(SLAVE)redLEDs.clk,(MASTER)clk_50.clk,(SLAVE)volumeDownButton.clk,(SLAVE)SRAM.clk1,(SLAVE)greenLEDs.clk,(SLAVE)volumeUpButton.clk) 1 0 3 160 210 NJ 120 940
+preplace netloc EXPORT<net_container>audioProcessor</net_container>(SLAVE)audioProcessor.clk,(SLAVE)clk_50.clk_in) 1 0 2 NJ 330 NJ
+preplace netloc POINT_TO_POINT<net_container>audioProcessor</net_container>(MASTER)NIOSAudioProcessor.irq,(SLAVE)JTAG.irq) 1 1 2 NJ 140 NJ
+preplace netloc EXPORT<net_container>audioProcessor</net_container>(SLAVE)audioProcessor.treble_stage_switch,(SLAVE)trebleStageSwitch.external_connection) 1 0 3 NJ 570 NJ 570 NJ
+preplace netloc EXPORT<net_container>audioProcessor</net_container>(SLAVE)audioProcessor.bass_stage_switch,(SLAVE)bassStageSwitch.external_connection) 1 0 3 NJ 950 NJ 950 NJ
+preplace netloc POINT_TO_POINT<net_container>audioProcessor</net_container>(MASTER)NIOSAudioProcessor.debug_reset_request,(SLAVE)clk_50.clk_in_reset) 1 1 1 560
+preplace netloc INTERCONNECT<net_container>audioProcessor</net_container>(MASTER)NIOSAudioProcessor.instruction_master,(SLAVE)JTAG.avalon_jtag_slave,(SLAVE)NIOSAudioProcessor.debug_mem_slave,(SLAVE)SRAM.s1,(SLAVE)redLEDs.s1,(SLAVE)volumeDownButton.s1,(SLAVE)greenLEDs.s1,(SLAVE)muteButton.s1,(SLAVE)bassStageSwitch.s1,(MASTER)NIOSAudioProcessor.data_master,(SLAVE)volumeUpButton.s1,(SLAVE)trebleStageSwitch.s1) 1 0 3 200 190 580 100 880
+preplace netloc FAN_OUT<net_container>audioProcessor</net_container>(SLAVE)bassStageSwitch.reset,(SLAVE)volumeUpButton.reset,(SLAVE)greenLEDs.reset,(SLAVE)SRAM.reset1,(SLAVE)NIOSAudioProcessor.reset,(SLAVE)JTAG.reset,(SLAVE)trebleStageSwitch.reset,(MASTER)clk_50.clk_reset,(SLAVE)redLEDs.reset,(SLAVE)volumeDownButton.reset,(SLAVE)muteButton.reset) 1 0 3 180 230 NJ 210 920
+preplace netloc EXPORT<net_container>audioProcessor</net_container>(SLAVE)audioProcessor.green_leds,(SLAVE)greenLEDs.external_connection) 1 0 3 NJ 350 NJ 290 NJ
+preplace netloc EXPORT<net_container>audioProcessor</net_container>(SLAVE)volumeDownButton.external_connection,(SLAVE)audioProcessor.volume_down_button) 1 0 3 NJ 670 NJ 670 NJ
+preplace netloc EXPORT<net_container>audioProcessor</net_container>(SLAVE)redLEDs.external_connection,(SLAVE)audioProcessor.red_leds) 1 0 3 NJ 470 NJ 470 NJ
+preplace netloc EXPORT<net_container>audioProcessor</net_container>(SLAVE)audioProcessor.mute_button,(SLAVE)muteButton.external_connection) 1 0 3 NJ 370 NJ 370 NJ
+levelinfo -pg 1 0 130 1130
+levelinfo -hier audioProcessor 140 320 690 970 1120
