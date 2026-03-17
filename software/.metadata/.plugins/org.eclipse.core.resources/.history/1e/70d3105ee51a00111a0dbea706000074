@@ -1,0 +1,53 @@
+#include "altera_up_avalon_audio.h"
+#include "system.h"
+#include "io.h"
+
+int main()
+{
+	// 1. Open the audio core device
+	alt_up_audio_dev *audio = alt_up_audio_open_dev("/dev/audioCore");
+	unsigned int l_data, r_data;
+	static float l_lp_prev = 0;
+	static float r_lp_prev = 0;
+
+	// 2. Filter Coefficients for 3 stages (48 kHz sample rate)
+	// Stage 0: Off, Stage 1: Mid, Stage 2: Heavy
+	float b_alphas[3] = {1.00f, 0.85f, 0.7f};
+	float t_alphas[3] = {0.00f, 0.15f, 0.30f};
+
+	while(1)
+	{
+		// 3. Read the EQ stage selection from the physical switches (via PIO)
+		int b_stage = IORD(BASSSTAGESWITCH_BASE, 0);
+		int t_stage = IORD(TREBLESTAGESWITCH_BASE, 0);
+
+		// 4. Check if the ADC has data ready to be read
+		if(alt_up_audio_read_fifo(audio, &l_data, 1, ALT_UP_AUDIO_LEFT))
+		{
+			alt_up_audio_read_fifo(audio, &r_data, 1, ALT_UP_AUDIO_RIGHT);
+
+			// 5. Convert unsigned raw data to signed 16-bit floats for DSP
+			float l_in = (float)((int16_t)l_data);
+			float r_in = (float)((int16_t)r_data);
+
+			// 6. Bass Filter (Low Pass): y[n] = a*y[n-1] + (1-a)*x[n]
+			float l_low = b_alphas[b_stage] * l_lp_prev + (1.0f - b_alphas[b_stage]) * l_in;
+			float r_low = b_alphas[b_stage] * r_lp_prev + (1.0f - b_alphas[b_stage]) * r_in;
+
+			// 7. Treble Filter (High Pass): HighPass = Original - LowPassVersion
+			float l_high = l_in - (t_alphas[t_stage] * l_lp_prev + (1.0f - t_alphas[t_stage]) * l_in);
+			float r_high = r_in - (t_alphas[t_stage] * r_lp_prev + (1.0f - t_alphas[t_stage]) * r_in);
+
+
+			// 8. Recombine and cast back to 16-bit integer
+			int16_t l_out = (int16_t)(l_low + l_high);
+			int16_t r_out = (int16_t)(r_low + r_high);
+			l_lp_prev = l_low;
+			r_lp_prev = r_low;
+
+			// 9. Write processed sample to the DAC FIFO
+			alt_up_audio_write_fifo(audio, (unsigned int*)&l_out, 1, ALT_UP_AUDIO_LEFT);
+			alt_up_audio_write_fifo(audio, (unsigned int*)&r_out, 1, ALT_UP_AUDIO_RIGHT);
+		}
+	}
+}

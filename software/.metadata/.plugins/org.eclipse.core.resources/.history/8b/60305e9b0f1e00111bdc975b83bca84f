@@ -1,0 +1,45 @@
+//#include "altera_up_avalon_audio.h"
+#include "altera_avalon_pio_regs.h"
+#include "system.h"
+#include "io.h"
+#include "stdint.h"
+
+//#include "sys/alt_stdio.h"
+
+int main()
+{
+	// 1. Filter Coefficients for 3 stages (48 kHz sample rate)
+	// Stage 0: Off, Stage 1: Mid, Stage 2: Heavy
+	float b_alphas[3] = {1.00f, 0.85f, 0.7f};
+	float t_alphas[3] = {0.00f, 0.15f, 0.30f};
+
+	static float l_lp_prev = 0;
+	static float r_lp_prev = 0;
+
+	while(1)
+	{
+		// 2. Read the EQ stage selection from the physical switches (via PIO)
+		int b_stage = IORD_AVALON_PIO_DATA(BASSSTAGESWITCH_BASE, 0);
+		int t_stage = IORD_AVALON_PIO_DATA(TREBLESTAGESWITCH_BASE, 0);
+
+		// 3. Check if the VHDL flag is HIGH (New audio data is ready)
+		if(IORD_AVALON_PIO_DATA(NIOS_DATA_READY_BASE) == 1)
+		{
+			// 4. Grab the fresh 16-bit integers from the Input PIOs
+			// We cast to int16_t immediately so negative audio samples keep their sign
+			int16_t l_data = (int16_t)IORD_ALTERA_AVALON_PRO_DATA(NIOS_IN_LEFT_BASE);
+			int16_t r_data = (int16_t)IORD_ALTERA_AVALON_PRO_DATA(NIOS_IN_RIGHT_BASE);
+
+			// 5. Convert raw data to floats for DSP
+			float l_in = (float)l_data;
+			float r_in = (float)r_data;
+
+			// 6. Bass Filter (Low Pass)
+			float l_low = b_alphas[b_stage] * l_lp_prev + (1.0f - b_alphas[b_stage]) * l_in;
+			float r_low = b_alphas[b_stage] * r_lp_prev + (1.0f - b_alphas[b_stage]) * r_in;
+
+			// 7. Treble Filter (High Pass)
+			float l_high = l_in - (t_alphas[t_stage] * l_lp_prev + (1.0f - t_alphas[t_stage]) * l_in);
+		}
+	}
+}

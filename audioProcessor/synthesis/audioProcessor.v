@@ -4,21 +4,22 @@
 
 `timescale 1 ps / 1 ps
 module audioProcessor (
-		input  wire [1:0]  bass_stage_switch_export,   //   bass_stage_switch.export
-		input  wire        clk_clk,                    //                 clk.clk
-		output wire [7:0]  green_leds_export,          //          green_leds.export
-		input  wire        i2c_master_serial_sda_in,   //   i2c_master_serial.sda_in
-		input  wire        i2c_master_serial_scl_in,   //                    .scl_in
-		output wire        i2c_master_serial_sda_oe,   //                    .sda_oe
-		output wire        i2c_master_serial_scl_oe,   //                    .scl_oe
-		input  wire        mute_button_export,         //         mute_button.export
-		output wire [17:0] red_leds_export,            //            red_leds.export
-		input  wire [1:0]  treble_stage_switch_export, // treble_stage_switch.export
-		input  wire        volume_down_button_export,  //  volume_down_button.export
-		input  wire        volume_up_button_export     //    volume_up_button.export
+		input  wire [1:0]  bass_stage_switch_export,                   //                   bass_stage_switch.export
+		input  wire        clk_clk,                                    //                                 clk.clk
+		output wire [7:0]  green_leds_export,                          //                          green_leds.export
+		input  wire        mute_button_export,                         //                         mute_button.export
+		input  wire        nios_data_ready_external_connection_export, // nios_data_ready_external_connection.export
+		input  wire [15:0] nios_in_left_external_connection_export,    //    nios_in_left_external_connection.export
+		input  wire [15:0] nios_in_right_external_connection_export,   //   nios_in_right_external_connection.export
+		output wire [15:0] nios_out_left_external_connection_export,   //   nios_out_left_external_connection.export
+		output wire [15:0] nios_out_right_external_connection_export,  //  nios_out_right_external_connection.export
+		output wire [17:0] red_leds_export,                            //                            red_leds.export
+		input  wire        reset_reset_n,                              //                               reset.reset_n
+		input  wire [1:0]  treble_stage_switch_export,                 //                 treble_stage_switch.export
+		input  wire        volume_down_button_export,                  //                  volume_down_button.export
+		input  wire        volume_up_button_export                     //                    volume_up_button.export
 	);
 
-	wire         niosaudioprocessor_debug_reset_request_reset;                     // NIOSAudioProcessor:debug_reset_request -> rst_controller:reset_in0
 	wire  [31:0] niosaudioprocessor_data_master_readdata;                          // mm_interconnect_0:NIOSAudioProcessor_data_master_readdata -> NIOSAudioProcessor:d_readdata
 	wire         niosaudioprocessor_data_master_waitrequest;                       // mm_interconnect_0:NIOSAudioProcessor_data_master_waitrequest -> NIOSAudioProcessor:d_waitrequest
 	wire         niosaudioprocessor_data_master_debugaccess;                       // NIOSAudioProcessor:debug_mem_slave_debugaccess_to_roms -> mm_interconnect_0:NIOSAudioProcessor_data_master_debugaccess
@@ -38,11 +39,6 @@ module audioProcessor (
 	wire         mm_interconnect_0_jtag_avalon_jtag_slave_read;                    // mm_interconnect_0:JTAG_avalon_jtag_slave_read -> JTAG:av_read_n
 	wire         mm_interconnect_0_jtag_avalon_jtag_slave_write;                   // mm_interconnect_0:JTAG_avalon_jtag_slave_write -> JTAG:av_write_n
 	wire  [31:0] mm_interconnect_0_jtag_avalon_jtag_slave_writedata;               // mm_interconnect_0:JTAG_avalon_jtag_slave_writedata -> JTAG:av_writedata
-	wire  [31:0] mm_interconnect_0_wm8731_i2c_csr_readdata;                        // wm8731_i2c:readdata -> mm_interconnect_0:wm8731_i2c_csr_readdata
-	wire   [3:0] mm_interconnect_0_wm8731_i2c_csr_address;                         // mm_interconnect_0:wm8731_i2c_csr_address -> wm8731_i2c:addr
-	wire         mm_interconnect_0_wm8731_i2c_csr_read;                            // mm_interconnect_0:wm8731_i2c_csr_read -> wm8731_i2c:read
-	wire         mm_interconnect_0_wm8731_i2c_csr_write;                           // mm_interconnect_0:wm8731_i2c_csr_write -> wm8731_i2c:write
-	wire  [31:0] mm_interconnect_0_wm8731_i2c_csr_writedata;                       // mm_interconnect_0:wm8731_i2c_csr_writedata -> wm8731_i2c:writedata
 	wire  [31:0] mm_interconnect_0_niosaudioprocessor_debug_mem_slave_readdata;    // NIOSAudioProcessor:debug_mem_slave_readdata -> mm_interconnect_0:NIOSAudioProcessor_debug_mem_slave_readdata
 	wire         mm_interconnect_0_niosaudioprocessor_debug_mem_slave_waitrequest; // NIOSAudioProcessor:debug_mem_slave_waitrequest -> mm_interconnect_0:NIOSAudioProcessor_debug_mem_slave_waitrequest
 	wire         mm_interconnect_0_niosaudioprocessor_debug_mem_slave_debugaccess; // mm_interconnect_0:NIOSAudioProcessor_debug_mem_slave_debugaccess -> NIOSAudioProcessor:debug_mem_slave_debugaccess
@@ -78,10 +74,25 @@ module audioProcessor (
 	wire   [1:0] mm_interconnect_0_bassstageswitch_s1_address;                     // mm_interconnect_0:bassStageSwitch_s1_address -> bassStageSwitch:address
 	wire  [31:0] mm_interconnect_0_treblestageswitch_s1_readdata;                  // trebleStageSwitch:readdata -> mm_interconnect_0:trebleStageSwitch_s1_readdata
 	wire   [1:0] mm_interconnect_0_treblestageswitch_s1_address;                   // mm_interconnect_0:trebleStageSwitch_s1_address -> trebleStageSwitch:address
-	wire         irq_mapper_receiver0_irq;                                         // wm8731_i2c:intr -> irq_mapper:receiver0_irq
-	wire         irq_mapper_receiver1_irq;                                         // JTAG:av_irq -> irq_mapper:receiver1_irq
+	wire  [31:0] mm_interconnect_0_nios_in_left_s1_readdata;                       // nios_in_left:readdata -> mm_interconnect_0:nios_in_left_s1_readdata
+	wire   [1:0] mm_interconnect_0_nios_in_left_s1_address;                        // mm_interconnect_0:nios_in_left_s1_address -> nios_in_left:address
+	wire  [31:0] mm_interconnect_0_nios_in_right_s1_readdata;                      // nios_in_right:readdata -> mm_interconnect_0:nios_in_right_s1_readdata
+	wire   [1:0] mm_interconnect_0_nios_in_right_s1_address;                       // mm_interconnect_0:nios_in_right_s1_address -> nios_in_right:address
+	wire         mm_interconnect_0_nios_out_left_s1_chipselect;                    // mm_interconnect_0:nios_out_left_s1_chipselect -> nios_out_left:chipselect
+	wire  [31:0] mm_interconnect_0_nios_out_left_s1_readdata;                      // nios_out_left:readdata -> mm_interconnect_0:nios_out_left_s1_readdata
+	wire   [1:0] mm_interconnect_0_nios_out_left_s1_address;                       // mm_interconnect_0:nios_out_left_s1_address -> nios_out_left:address
+	wire         mm_interconnect_0_nios_out_left_s1_write;                         // mm_interconnect_0:nios_out_left_s1_write -> nios_out_left:write_n
+	wire  [31:0] mm_interconnect_0_nios_out_left_s1_writedata;                     // mm_interconnect_0:nios_out_left_s1_writedata -> nios_out_left:writedata
+	wire         mm_interconnect_0_nios_out_right_s1_chipselect;                   // mm_interconnect_0:nios_out_right_s1_chipselect -> nios_out_right:chipselect
+	wire  [31:0] mm_interconnect_0_nios_out_right_s1_readdata;                     // nios_out_right:readdata -> mm_interconnect_0:nios_out_right_s1_readdata
+	wire   [1:0] mm_interconnect_0_nios_out_right_s1_address;                      // mm_interconnect_0:nios_out_right_s1_address -> nios_out_right:address
+	wire         mm_interconnect_0_nios_out_right_s1_write;                        // mm_interconnect_0:nios_out_right_s1_write -> nios_out_right:write_n
+	wire  [31:0] mm_interconnect_0_nios_out_right_s1_writedata;                    // mm_interconnect_0:nios_out_right_s1_writedata -> nios_out_right:writedata
+	wire  [31:0] mm_interconnect_0_nios_data_ready_s1_readdata;                    // nios_data_ready:readdata -> mm_interconnect_0:nios_data_ready_s1_readdata
+	wire   [1:0] mm_interconnect_0_nios_data_ready_s1_address;                     // mm_interconnect_0:nios_data_ready_s1_address -> nios_data_ready:address
+	wire         irq_mapper_receiver0_irq;                                         // JTAG:av_irq -> irq_mapper:receiver0_irq
 	wire  [31:0] niosaudioprocessor_irq_irq;                                       // irq_mapper:sender_irq -> NIOSAudioProcessor:irq
-	wire         rst_controller_reset_out_reset;                                   // rst_controller:reset_out -> [JTAG:rst_n, NIOSAudioProcessor:reset_n, SRAM:reset, bassStageSwitch:reset_n, greenLEDs:reset_n, irq_mapper:reset, mm_interconnect_0:NIOSAudioProcessor_reset_reset_bridge_in_reset_reset, muteButton:reset_n, redLEDs:reset_n, rst_translator:in_reset, trebleStageSwitch:reset_n, volumeDownButton:reset_n, volumeUpButton:reset_n, wm8731_i2c:rst_n]
+	wire         rst_controller_reset_out_reset;                                   // rst_controller:reset_out -> [JTAG:rst_n, NIOSAudioProcessor:reset_n, SRAM:reset, bassStageSwitch:reset_n, greenLEDs:reset_n, irq_mapper:reset, mm_interconnect_0:NIOSAudioProcessor_reset_reset_bridge_in_reset_reset, muteButton:reset_n, nios_data_ready:reset_n, nios_in_left:reset_n, nios_in_right:reset_n, nios_out_left:reset_n, nios_out_right:reset_n, redLEDs:reset_n, rst_translator:in_reset, trebleStageSwitch:reset_n, volumeDownButton:reset_n, volumeUpButton:reset_n]
 	wire         rst_controller_reset_out_reset_req;                               // rst_controller:reset_req -> [NIOSAudioProcessor:reset_req, SRAM:reset_req, rst_translator:reset_req_in]
 
 	audioProcessor_JTAG jtag (
@@ -94,7 +105,7 @@ module audioProcessor (
 		.av_write_n     (~mm_interconnect_0_jtag_avalon_jtag_slave_write),      //                  .write_n
 		.av_writedata   (mm_interconnect_0_jtag_avalon_jtag_slave_writedata),   //                  .writedata
 		.av_waitrequest (mm_interconnect_0_jtag_avalon_jtag_slave_waitrequest), //                  .waitrequest
-		.av_irq         (irq_mapper_receiver1_irq)                              //               irq.irq
+		.av_irq         (irq_mapper_receiver0_irq)                              //               irq.irq
 	);
 
 	audioProcessor_NIOSAudioProcessor niosaudioprocessor (
@@ -114,7 +125,7 @@ module audioProcessor (
 		.i_readdata                          (niosaudioprocessor_instruction_master_readdata),                   //                          .readdata
 		.i_waitrequest                       (niosaudioprocessor_instruction_master_waitrequest),                //                          .waitrequest
 		.irq                                 (niosaudioprocessor_irq_irq),                                       //                       irq.irq
-		.debug_reset_request                 (niosaudioprocessor_debug_reset_request_reset),                     //       debug_reset_request.reset
+		.debug_reset_request                 (),                                                                 //       debug_reset_request.reset
 		.debug_mem_slave_address             (mm_interconnect_0_niosaudioprocessor_debug_mem_slave_address),     //           debug_mem_slave.address
 		.debug_mem_slave_byteenable          (mm_interconnect_0_niosaudioprocessor_debug_mem_slave_byteenable),  //                          .byteenable
 		.debug_mem_slave_debugaccess         (mm_interconnect_0_niosaudioprocessor_debug_mem_slave_debugaccess), //                          .debugaccess
@@ -167,6 +178,52 @@ module audioProcessor (
 		.in_port  (mute_button_export)                        // external_connection.export
 	);
 
+	audioProcessor_muteButton nios_data_ready (
+		.clk      (clk_clk),                                       //                 clk.clk
+		.reset_n  (~rst_controller_reset_out_reset),               //               reset.reset_n
+		.address  (mm_interconnect_0_nios_data_ready_s1_address),  //                  s1.address
+		.readdata (mm_interconnect_0_nios_data_ready_s1_readdata), //                    .readdata
+		.in_port  (nios_data_ready_external_connection_export)     // external_connection.export
+	);
+
+	audioProcessor_nios_in_left nios_in_left (
+		.clk      (clk_clk),                                    //                 clk.clk
+		.reset_n  (~rst_controller_reset_out_reset),            //               reset.reset_n
+		.address  (mm_interconnect_0_nios_in_left_s1_address),  //                  s1.address
+		.readdata (mm_interconnect_0_nios_in_left_s1_readdata), //                    .readdata
+		.in_port  (nios_in_left_external_connection_export)     // external_connection.export
+	);
+
+	audioProcessor_nios_in_left nios_in_right (
+		.clk      (clk_clk),                                     //                 clk.clk
+		.reset_n  (~rst_controller_reset_out_reset),             //               reset.reset_n
+		.address  (mm_interconnect_0_nios_in_right_s1_address),  //                  s1.address
+		.readdata (mm_interconnect_0_nios_in_right_s1_readdata), //                    .readdata
+		.in_port  (nios_in_right_external_connection_export)     // external_connection.export
+	);
+
+	audioProcessor_nios_out_left nios_out_left (
+		.clk        (clk_clk),                                       //                 clk.clk
+		.reset_n    (~rst_controller_reset_out_reset),               //               reset.reset_n
+		.address    (mm_interconnect_0_nios_out_left_s1_address),    //                  s1.address
+		.write_n    (~mm_interconnect_0_nios_out_left_s1_write),     //                    .write_n
+		.writedata  (mm_interconnect_0_nios_out_left_s1_writedata),  //                    .writedata
+		.chipselect (mm_interconnect_0_nios_out_left_s1_chipselect), //                    .chipselect
+		.readdata   (mm_interconnect_0_nios_out_left_s1_readdata),   //                    .readdata
+		.out_port   (nios_out_left_external_connection_export)       // external_connection.export
+	);
+
+	audioProcessor_nios_out_left nios_out_right (
+		.clk        (clk_clk),                                        //                 clk.clk
+		.reset_n    (~rst_controller_reset_out_reset),                //               reset.reset_n
+		.address    (mm_interconnect_0_nios_out_right_s1_address),    //                  s1.address
+		.write_n    (~mm_interconnect_0_nios_out_right_s1_write),     //                    .write_n
+		.writedata  (mm_interconnect_0_nios_out_right_s1_writedata),  //                    .writedata
+		.chipselect (mm_interconnect_0_nios_out_right_s1_chipselect), //                    .chipselect
+		.readdata   (mm_interconnect_0_nios_out_right_s1_readdata),   //                    .readdata
+		.out_port   (nios_out_right_external_connection_export)       // external_connection.export
+	);
+
 	audioProcessor_redLEDs redleds (
 		.clk        (clk_clk),                                 //                 clk.clk
 		.reset_n    (~rst_controller_reset_out_reset),         //               reset.reset_n
@@ -202,31 +259,6 @@ module audioProcessor (
 		.in_port  (volume_up_button_export)                       // external_connection.export
 	);
 
-	altera_avalon_i2c #(
-		.USE_AV_ST       (0),
-		.FIFO_DEPTH      (4),
-		.FIFO_DEPTH_LOG2 (2)
-	) wm8731_i2c (
-		.clk       (clk_clk),                                    //            clock.clk
-		.rst_n     (~rst_controller_reset_out_reset),            //       reset_sink.reset_n
-		.intr      (irq_mapper_receiver0_irq),                   // interrupt_sender.irq
-		.addr      (mm_interconnect_0_wm8731_i2c_csr_address),   //              csr.address
-		.read      (mm_interconnect_0_wm8731_i2c_csr_read),      //                 .read
-		.write     (mm_interconnect_0_wm8731_i2c_csr_write),     //                 .write
-		.writedata (mm_interconnect_0_wm8731_i2c_csr_writedata), //                 .writedata
-		.readdata  (mm_interconnect_0_wm8731_i2c_csr_readdata),  //                 .readdata
-		.sda_in    (i2c_master_serial_sda_in),                   //       i2c_serial.sda_in
-		.scl_in    (i2c_master_serial_scl_in),                   //                 .scl_in
-		.sda_oe    (i2c_master_serial_sda_oe),                   //                 .sda_oe
-		.scl_oe    (i2c_master_serial_scl_oe),                   //                 .scl_oe
-		.src_data  (),                                           //      (terminated)
-		.src_valid (),                                           //      (terminated)
-		.src_ready (1'b0),                                       //      (terminated)
-		.snk_data  (16'b0000000000000000),                       //      (terminated)
-		.snk_valid (1'b0),                                       //      (terminated)
-		.snk_ready ()                                            //      (terminated)
-	);
-
 	audioProcessor_mm_interconnect_0 mm_interconnect_0 (
 		.clk_50_clk_clk                                       (clk_clk),                                                          //                                     clk_50_clk.clk
 		.NIOSAudioProcessor_reset_reset_bridge_in_reset_reset (rst_controller_reset_out_reset),                                   // NIOSAudioProcessor_reset_reset_bridge_in_reset.reset
@@ -258,6 +290,22 @@ module audioProcessor (
 		.JTAG_avalon_jtag_slave_chipselect                    (mm_interconnect_0_jtag_avalon_jtag_slave_chipselect),              //                                               .chipselect
 		.muteButton_s1_address                                (mm_interconnect_0_mutebutton_s1_address),                          //                                  muteButton_s1.address
 		.muteButton_s1_readdata                               (mm_interconnect_0_mutebutton_s1_readdata),                         //                                               .readdata
+		.nios_data_ready_s1_address                           (mm_interconnect_0_nios_data_ready_s1_address),                     //                             nios_data_ready_s1.address
+		.nios_data_ready_s1_readdata                          (mm_interconnect_0_nios_data_ready_s1_readdata),                    //                                               .readdata
+		.nios_in_left_s1_address                              (mm_interconnect_0_nios_in_left_s1_address),                        //                                nios_in_left_s1.address
+		.nios_in_left_s1_readdata                             (mm_interconnect_0_nios_in_left_s1_readdata),                       //                                               .readdata
+		.nios_in_right_s1_address                             (mm_interconnect_0_nios_in_right_s1_address),                       //                               nios_in_right_s1.address
+		.nios_in_right_s1_readdata                            (mm_interconnect_0_nios_in_right_s1_readdata),                      //                                               .readdata
+		.nios_out_left_s1_address                             (mm_interconnect_0_nios_out_left_s1_address),                       //                               nios_out_left_s1.address
+		.nios_out_left_s1_write                               (mm_interconnect_0_nios_out_left_s1_write),                         //                                               .write
+		.nios_out_left_s1_readdata                            (mm_interconnect_0_nios_out_left_s1_readdata),                      //                                               .readdata
+		.nios_out_left_s1_writedata                           (mm_interconnect_0_nios_out_left_s1_writedata),                     //                                               .writedata
+		.nios_out_left_s1_chipselect                          (mm_interconnect_0_nios_out_left_s1_chipselect),                    //                                               .chipselect
+		.nios_out_right_s1_address                            (mm_interconnect_0_nios_out_right_s1_address),                      //                              nios_out_right_s1.address
+		.nios_out_right_s1_write                              (mm_interconnect_0_nios_out_right_s1_write),                        //                                               .write
+		.nios_out_right_s1_readdata                           (mm_interconnect_0_nios_out_right_s1_readdata),                     //                                               .readdata
+		.nios_out_right_s1_writedata                          (mm_interconnect_0_nios_out_right_s1_writedata),                    //                                               .writedata
+		.nios_out_right_s1_chipselect                         (mm_interconnect_0_nios_out_right_s1_chipselect),                   //                                               .chipselect
 		.NIOSAudioProcessor_debug_mem_slave_address           (mm_interconnect_0_niosaudioprocessor_debug_mem_slave_address),     //             NIOSAudioProcessor_debug_mem_slave.address
 		.NIOSAudioProcessor_debug_mem_slave_write             (mm_interconnect_0_niosaudioprocessor_debug_mem_slave_write),       //                                               .write
 		.NIOSAudioProcessor_debug_mem_slave_read              (mm_interconnect_0_niosaudioprocessor_debug_mem_slave_read),        //                                               .read
@@ -283,19 +331,13 @@ module audioProcessor (
 		.volumeDownButton_s1_address                          (mm_interconnect_0_volumedownbutton_s1_address),                    //                            volumeDownButton_s1.address
 		.volumeDownButton_s1_readdata                         (mm_interconnect_0_volumedownbutton_s1_readdata),                   //                                               .readdata
 		.volumeUpButton_s1_address                            (mm_interconnect_0_volumeupbutton_s1_address),                      //                              volumeUpButton_s1.address
-		.volumeUpButton_s1_readdata                           (mm_interconnect_0_volumeupbutton_s1_readdata),                     //                                               .readdata
-		.wm8731_i2c_csr_address                               (mm_interconnect_0_wm8731_i2c_csr_address),                         //                                 wm8731_i2c_csr.address
-		.wm8731_i2c_csr_write                                 (mm_interconnect_0_wm8731_i2c_csr_write),                           //                                               .write
-		.wm8731_i2c_csr_read                                  (mm_interconnect_0_wm8731_i2c_csr_read),                            //                                               .read
-		.wm8731_i2c_csr_readdata                              (mm_interconnect_0_wm8731_i2c_csr_readdata),                        //                                               .readdata
-		.wm8731_i2c_csr_writedata                             (mm_interconnect_0_wm8731_i2c_csr_writedata)                        //                                               .writedata
+		.volumeUpButton_s1_readdata                           (mm_interconnect_0_volumeupbutton_s1_readdata)                      //                                               .readdata
 	);
 
 	audioProcessor_irq_mapper irq_mapper (
 		.clk           (clk_clk),                        //       clk.clk
 		.reset         (rst_controller_reset_out_reset), // clk_reset.reset
 		.receiver0_irq (irq_mapper_receiver0_irq),       // receiver0.irq
-		.receiver1_irq (irq_mapper_receiver1_irq),       // receiver1.irq
 		.sender_irq    (niosaudioprocessor_irq_irq)      //    sender.irq
 	);
 
@@ -325,41 +367,41 @@ module audioProcessor (
 		.USE_RESET_REQUEST_IN15    (0),
 		.ADAPT_RESET_REQUEST       (0)
 	) rst_controller (
-		.reset_in0      (niosaudioprocessor_debug_reset_request_reset), // reset_in0.reset
-		.clk            (clk_clk),                                      //       clk.clk
-		.reset_out      (rst_controller_reset_out_reset),               // reset_out.reset
-		.reset_req      (rst_controller_reset_out_reset_req),           //          .reset_req
-		.reset_req_in0  (1'b0),                                         // (terminated)
-		.reset_in1      (1'b0),                                         // (terminated)
-		.reset_req_in1  (1'b0),                                         // (terminated)
-		.reset_in2      (1'b0),                                         // (terminated)
-		.reset_req_in2  (1'b0),                                         // (terminated)
-		.reset_in3      (1'b0),                                         // (terminated)
-		.reset_req_in3  (1'b0),                                         // (terminated)
-		.reset_in4      (1'b0),                                         // (terminated)
-		.reset_req_in4  (1'b0),                                         // (terminated)
-		.reset_in5      (1'b0),                                         // (terminated)
-		.reset_req_in5  (1'b0),                                         // (terminated)
-		.reset_in6      (1'b0),                                         // (terminated)
-		.reset_req_in6  (1'b0),                                         // (terminated)
-		.reset_in7      (1'b0),                                         // (terminated)
-		.reset_req_in7  (1'b0),                                         // (terminated)
-		.reset_in8      (1'b0),                                         // (terminated)
-		.reset_req_in8  (1'b0),                                         // (terminated)
-		.reset_in9      (1'b0),                                         // (terminated)
-		.reset_req_in9  (1'b0),                                         // (terminated)
-		.reset_in10     (1'b0),                                         // (terminated)
-		.reset_req_in10 (1'b0),                                         // (terminated)
-		.reset_in11     (1'b0),                                         // (terminated)
-		.reset_req_in11 (1'b0),                                         // (terminated)
-		.reset_in12     (1'b0),                                         // (terminated)
-		.reset_req_in12 (1'b0),                                         // (terminated)
-		.reset_in13     (1'b0),                                         // (terminated)
-		.reset_req_in13 (1'b0),                                         // (terminated)
-		.reset_in14     (1'b0),                                         // (terminated)
-		.reset_req_in14 (1'b0),                                         // (terminated)
-		.reset_in15     (1'b0),                                         // (terminated)
-		.reset_req_in15 (1'b0)                                          // (terminated)
+		.reset_in0      (~reset_reset_n),                     // reset_in0.reset
+		.clk            (clk_clk),                            //       clk.clk
+		.reset_out      (rst_controller_reset_out_reset),     // reset_out.reset
+		.reset_req      (rst_controller_reset_out_reset_req), //          .reset_req
+		.reset_req_in0  (1'b0),                               // (terminated)
+		.reset_in1      (1'b0),                               // (terminated)
+		.reset_req_in1  (1'b0),                               // (terminated)
+		.reset_in2      (1'b0),                               // (terminated)
+		.reset_req_in2  (1'b0),                               // (terminated)
+		.reset_in3      (1'b0),                               // (terminated)
+		.reset_req_in3  (1'b0),                               // (terminated)
+		.reset_in4      (1'b0),                               // (terminated)
+		.reset_req_in4  (1'b0),                               // (terminated)
+		.reset_in5      (1'b0),                               // (terminated)
+		.reset_req_in5  (1'b0),                               // (terminated)
+		.reset_in6      (1'b0),                               // (terminated)
+		.reset_req_in6  (1'b0),                               // (terminated)
+		.reset_in7      (1'b0),                               // (terminated)
+		.reset_req_in7  (1'b0),                               // (terminated)
+		.reset_in8      (1'b0),                               // (terminated)
+		.reset_req_in8  (1'b0),                               // (terminated)
+		.reset_in9      (1'b0),                               // (terminated)
+		.reset_req_in9  (1'b0),                               // (terminated)
+		.reset_in10     (1'b0),                               // (terminated)
+		.reset_req_in10 (1'b0),                               // (terminated)
+		.reset_in11     (1'b0),                               // (terminated)
+		.reset_req_in11 (1'b0),                               // (terminated)
+		.reset_in12     (1'b0),                               // (terminated)
+		.reset_req_in12 (1'b0),                               // (terminated)
+		.reset_in13     (1'b0),                               // (terminated)
+		.reset_req_in13 (1'b0),                               // (terminated)
+		.reset_in14     (1'b0),                               // (terminated)
+		.reset_req_in14 (1'b0),                               // (terminated)
+		.reset_in15     (1'b0),                               // (terminated)
+		.reset_req_in15 (1'b0)                                // (terminated)
 	);
 
 endmodule

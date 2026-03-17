@@ -1,0 +1,559 @@
+/*
+ * system.h - SOPC Builder system and BSP software package information
+ *
+ * Machine generated for CPU 'NIOSAudioProcessor' in SOPC Builder design 'audioProcessor'
+ * SOPC Builder design path: ../../audioProcessor.sopcinfo
+ *
+ * Generated: Thu Mar 12 13:19:52 CET 2026
+ */
+
+/*
+ * DO NOT MODIFY THIS FILE
+ *
+ * Changing this file will have subtle consequences
+ * which will almost certainly lead to a nonfunctioning
+ * system. If you do modify this file, be aware that your
+ * changes will be overwritten and lost when this file
+ * is generated again.
+ *
+ * DO NOT MODIFY THIS FILE
+ */
+
+/*
+ * License Agreement
+ *
+ * Copyright (c) 2008
+ * Altera Corporation, San Jose, California, USA.
+ * All rights reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ *
+ * This agreement shall be governed in all respects by the laws of the State
+ * of California and by the laws of the United States of America.
+ */
+
+#ifndef __SYSTEM_H_
+#define __SYSTEM_H_
+
+/* Include definitions from linker script generator */
+#include "linker.h"
+
+
+/*
+ * CPU configuration
+ *
+ */
+
+#define ALT_CPU_ARCHITECTURE "altera_nios2_gen2"
+#define ALT_CPU_BIG_ENDIAN 0
+#define ALT_CPU_BREAK_ADDR 0x00020820
+#define ALT_CPU_CPU_ARCH_NIOS2_R1
+#define ALT_CPU_CPU_FREQ 50000000u
+#define ALT_CPU_CPU_ID_SIZE 1
+#define ALT_CPU_CPU_ID_VALUE 0x00000000
+#define ALT_CPU_CPU_IMPLEMENTATION "tiny"
+#define ALT_CPU_DATA_ADDR_WIDTH 0x12
+#define ALT_CPU_DCACHE_LINE_SIZE 0
+#define ALT_CPU_DCACHE_LINE_SIZE_LOG2 0
+#define ALT_CPU_DCACHE_SIZE 0
+#define ALT_CPU_EXCEPTION_ADDR 0x00010020
+#define ALT_CPU_FLASH_ACCELERATOR_LINES 0
+#define ALT_CPU_FLASH_ACCELERATOR_LINE_SIZE 0
+#define ALT_CPU_FLUSHDA_SUPPORTED
+#define ALT_CPU_FREQ 50000000
+#define ALT_CPU_HARDWARE_DIVIDE_PRESENT 0
+#define ALT_CPU_HARDWARE_MULTIPLY_PRESENT 0
+#define ALT_CPU_HARDWARE_MULX_PRESENT 0
+#define ALT_CPU_HAS_DEBUG_CORE 1
+#define ALT_CPU_HAS_DEBUG_STUB
+#define ALT_CPU_HAS_ILLEGAL_INSTRUCTION_EXCEPTION
+#define ALT_CPU_HAS_JMPI_INSTRUCTION
+#define ALT_CPU_ICACHE_LINE_SIZE 0
+#define ALT_CPU_ICACHE_LINE_SIZE_LOG2 0
+#define ALT_CPU_ICACHE_SIZE 0
+#define ALT_CPU_INST_ADDR_WIDTH 0x12
+#define ALT_CPU_NAME "NIOSAudioProcessor"
+#define ALT_CPU_OCI_VERSION 1
+#define ALT_CPU_RESET_ADDR 0x00010000
+
+
+/*
+ * CPU configuration (with legacy prefix - don't use these anymore)
+ *
+ */
+
+#define NIOS2_BIG_ENDIAN 0
+#define NIOS2_BREAK_ADDR 0x00020820
+#define NIOS2_CPU_ARCH_NIOS2_R1
+#define NIOS2_CPU_FREQ 50000000u
+#define NIOS2_CPU_ID_SIZE 1
+#define NIOS2_CPU_ID_VALUE 0x00000000
+#define NIOS2_CPU_IMPLEMENTATION "tiny"
+#define NIOS2_DATA_ADDR_WIDTH 0x12
+#define NIOS2_DCACHE_LINE_SIZE 0
+#define NIOS2_DCACHE_LINE_SIZE_LOG2 0
+#define NIOS2_DCACHE_SIZE 0
+#define NIOS2_EXCEPTION_ADDR 0x00010020
+#define NIOS2_FLASH_ACCELERATOR_LINES 0
+#define NIOS2_FLASH_ACCELERATOR_LINE_SIZE 0
+#define NIOS2_FLUSHDA_SUPPORTED
+#define NIOS2_HARDWARE_DIVIDE_PRESENT 0
+#define NIOS2_HARDWARE_MULTIPLY_PRESENT 0
+#define NIOS2_HARDWARE_MULX_PRESENT 0
+#define NIOS2_HAS_DEBUG_CORE 1
+#define NIOS2_HAS_DEBUG_STUB
+#define NIOS2_HAS_ILLEGAL_INSTRUCTION_EXCEPTION
+#define NIOS2_HAS_JMPI_INSTRUCTION
+#define NIOS2_ICACHE_LINE_SIZE 0
+#define NIOS2_ICACHE_LINE_SIZE_LOG2 0
+#define NIOS2_ICACHE_SIZE 0
+#define NIOS2_INST_ADDR_WIDTH 0x12
+#define NIOS2_OCI_VERSION 1
+#define NIOS2_RESET_ADDR 0x00010000
+
+
+/*
+ * Define for each module class mastered by the CPU
+ *
+ */
+
+#define __ALTERA_AVALON_JTAG_UART
+#define __ALTERA_AVALON_ONCHIP_MEMORY2
+#define __ALTERA_AVALON_PIO
+#define __ALTERA_NIOS2_GEN2
+
+
+/*
+ * JTAG configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_JTAG altera_avalon_jtag_uart
+#define JTAG_BASE 0x210c0
+#define JTAG_IRQ 0
+#define JTAG_IRQ_INTERRUPT_CONTROLLER_ID 0
+#define JTAG_NAME "/dev/JTAG"
+#define JTAG_READ_DEPTH 64
+#define JTAG_READ_THRESHOLD 8
+#define JTAG_SPAN 8
+#define JTAG_TYPE "altera_avalon_jtag_uart"
+#define JTAG_WRITE_DEPTH 64
+#define JTAG_WRITE_THRESHOLD 8
+
+
+/*
+ * SRAM configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_SRAM altera_avalon_onchip_memory2
+#define SRAM_ALLOW_IN_SYSTEM_MEMORY_CONTENT_EDITOR 0
+#define SRAM_ALLOW_MRAM_SIM_CONTENTS_ONLY_FILE 0
+#define SRAM_BASE 0x10000
+#define SRAM_CONTENTS_INFO ""
+#define SRAM_DUAL_PORT 0
+#define SRAM_GUI_RAM_BLOCK_TYPE "AUTO"
+#define SRAM_INIT_CONTENTS_FILE "audioProcessor_SRAM"
+#define SRAM_INIT_MEM_CONTENT 1
+#define SRAM_INSTANCE_ID "NONE"
+#define SRAM_IRQ -1
+#define SRAM_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define SRAM_NAME "/dev/SRAM"
+#define SRAM_NON_DEFAULT_INIT_FILE_ENABLED 0
+#define SRAM_RAM_BLOCK_TYPE "AUTO"
+#define SRAM_READ_DURING_WRITE_MODE "DONT_CARE"
+#define SRAM_SINGLE_CLOCK_OP 0
+#define SRAM_SIZE_MULTIPLE 1
+#define SRAM_SIZE_VALUE 40960
+#define SRAM_SPAN 40960
+#define SRAM_TYPE "altera_avalon_onchip_memory2"
+#define SRAM_WRITABLE 1
+
+
+/*
+ * System configuration
+ *
+ */
+
+#define ALT_DEVICE_FAMILY "Cyclone IV E"
+#define ALT_ENHANCED_INTERRUPT_API_PRESENT
+#define ALT_IRQ_BASE NULL
+#define ALT_LOG_PORT "/dev/null"
+#define ALT_LOG_PORT_BASE 0x0
+#define ALT_LOG_PORT_DEV null
+#define ALT_LOG_PORT_TYPE ""
+#define ALT_NUM_EXTERNAL_INTERRUPT_CONTROLLERS 0
+#define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
+#define ALT_NUM_INTERRUPT_CONTROLLERS 1
+#define ALT_STDERR "/dev/JTAG"
+#define ALT_STDERR_BASE 0x210c0
+#define ALT_STDERR_DEV JTAG
+#define ALT_STDERR_IS_JTAG_UART
+#define ALT_STDERR_PRESENT
+#define ALT_STDERR_TYPE "altera_avalon_jtag_uart"
+#define ALT_STDIN "/dev/JTAG"
+#define ALT_STDIN_BASE 0x210c0
+#define ALT_STDIN_DEV JTAG
+#define ALT_STDIN_IS_JTAG_UART
+#define ALT_STDIN_PRESENT
+#define ALT_STDIN_TYPE "altera_avalon_jtag_uart"
+#define ALT_STDOUT "/dev/JTAG"
+#define ALT_STDOUT_BASE 0x210c0
+#define ALT_STDOUT_DEV JTAG
+#define ALT_STDOUT_IS_JTAG_UART
+#define ALT_STDOUT_PRESENT
+#define ALT_STDOUT_TYPE "altera_avalon_jtag_uart"
+#define ALT_SYSTEM_NAME "audioProcessor"
+
+
+/*
+ * bassStageSwitch configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_bassStageSwitch altera_avalon_pio
+#define BASSSTAGESWITCH_BASE 0x21060
+#define BASSSTAGESWITCH_BIT_CLEARING_EDGE_REGISTER 0
+#define BASSSTAGESWITCH_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define BASSSTAGESWITCH_CAPTURE 0
+#define BASSSTAGESWITCH_DATA_WIDTH 2
+#define BASSSTAGESWITCH_DO_TEST_BENCH_WIRING 0
+#define BASSSTAGESWITCH_DRIVEN_SIM_VALUE 0
+#define BASSSTAGESWITCH_EDGE_TYPE "NONE"
+#define BASSSTAGESWITCH_FREQ 50000000
+#define BASSSTAGESWITCH_HAS_IN 1
+#define BASSSTAGESWITCH_HAS_OUT 0
+#define BASSSTAGESWITCH_HAS_TRI 0
+#define BASSSTAGESWITCH_IRQ -1
+#define BASSSTAGESWITCH_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define BASSSTAGESWITCH_IRQ_TYPE "NONE"
+#define BASSSTAGESWITCH_NAME "/dev/bassStageSwitch"
+#define BASSSTAGESWITCH_RESET_VALUE 0
+#define BASSSTAGESWITCH_SPAN 16
+#define BASSSTAGESWITCH_TYPE "altera_avalon_pio"
+
+
+/*
+ * greenLEDs configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_greenLEDs altera_avalon_pio
+#define GREENLEDS_BASE 0x210b0
+#define GREENLEDS_BIT_CLEARING_EDGE_REGISTER 0
+#define GREENLEDS_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define GREENLEDS_CAPTURE 0
+#define GREENLEDS_DATA_WIDTH 8
+#define GREENLEDS_DO_TEST_BENCH_WIRING 0
+#define GREENLEDS_DRIVEN_SIM_VALUE 0
+#define GREENLEDS_EDGE_TYPE "NONE"
+#define GREENLEDS_FREQ 50000000
+#define GREENLEDS_HAS_IN 0
+#define GREENLEDS_HAS_OUT 1
+#define GREENLEDS_HAS_TRI 0
+#define GREENLEDS_IRQ -1
+#define GREENLEDS_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define GREENLEDS_IRQ_TYPE "NONE"
+#define GREENLEDS_NAME "/dev/greenLEDs"
+#define GREENLEDS_RESET_VALUE 0
+#define GREENLEDS_SPAN 16
+#define GREENLEDS_TYPE "altera_avalon_pio"
+
+
+/*
+ * hal configuration
+ *
+ */
+
+#define ALT_INCLUDE_INSTRUCTION_RELATED_EXCEPTION_API
+#define ALT_MAX_FD 4
+#define ALT_SYS_CLK none
+#define ALT_TIMESTAMP_CLK none
+
+
+/*
+ * muteButton configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_muteButton altera_avalon_pio
+#define MUTEBUTTON_BASE 0x21070
+#define MUTEBUTTON_BIT_CLEARING_EDGE_REGISTER 0
+#define MUTEBUTTON_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define MUTEBUTTON_CAPTURE 0
+#define MUTEBUTTON_DATA_WIDTH 1
+#define MUTEBUTTON_DO_TEST_BENCH_WIRING 0
+#define MUTEBUTTON_DRIVEN_SIM_VALUE 0
+#define MUTEBUTTON_EDGE_TYPE "NONE"
+#define MUTEBUTTON_FREQ 50000000
+#define MUTEBUTTON_HAS_IN 1
+#define MUTEBUTTON_HAS_OUT 0
+#define MUTEBUTTON_HAS_TRI 0
+#define MUTEBUTTON_IRQ -1
+#define MUTEBUTTON_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define MUTEBUTTON_IRQ_TYPE "NONE"
+#define MUTEBUTTON_NAME "/dev/muteButton"
+#define MUTEBUTTON_RESET_VALUE 0
+#define MUTEBUTTON_SPAN 16
+#define MUTEBUTTON_TYPE "altera_avalon_pio"
+
+
+/*
+ * nios_data_ready configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_nios_data_ready altera_avalon_pio
+#define NIOS_DATA_READY_BASE 0x21000
+#define NIOS_DATA_READY_BIT_CLEARING_EDGE_REGISTER 0
+#define NIOS_DATA_READY_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define NIOS_DATA_READY_CAPTURE 0
+#define NIOS_DATA_READY_DATA_WIDTH 1
+#define NIOS_DATA_READY_DO_TEST_BENCH_WIRING 0
+#define NIOS_DATA_READY_DRIVEN_SIM_VALUE 0
+#define NIOS_DATA_READY_EDGE_TYPE "NONE"
+#define NIOS_DATA_READY_FREQ 50000000
+#define NIOS_DATA_READY_HAS_IN 1
+#define NIOS_DATA_READY_HAS_OUT 0
+#define NIOS_DATA_READY_HAS_TRI 0
+#define NIOS_DATA_READY_IRQ -1
+#define NIOS_DATA_READY_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define NIOS_DATA_READY_IRQ_TYPE "NONE"
+#define NIOS_DATA_READY_NAME "/dev/nios_data_ready"
+#define NIOS_DATA_READY_RESET_VALUE 0
+#define NIOS_DATA_READY_SPAN 16
+#define NIOS_DATA_READY_TYPE "altera_avalon_pio"
+
+
+/*
+ * nios_in_left configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_nios_in_left altera_avalon_pio
+#define NIOS_IN_LEFT_BASE 0x21040
+#define NIOS_IN_LEFT_BIT_CLEARING_EDGE_REGISTER 0
+#define NIOS_IN_LEFT_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define NIOS_IN_LEFT_CAPTURE 0
+#define NIOS_IN_LEFT_DATA_WIDTH 16
+#define NIOS_IN_LEFT_DO_TEST_BENCH_WIRING 0
+#define NIOS_IN_LEFT_DRIVEN_SIM_VALUE 0
+#define NIOS_IN_LEFT_EDGE_TYPE "NONE"
+#define NIOS_IN_LEFT_FREQ 50000000
+#define NIOS_IN_LEFT_HAS_IN 1
+#define NIOS_IN_LEFT_HAS_OUT 0
+#define NIOS_IN_LEFT_HAS_TRI 0
+#define NIOS_IN_LEFT_IRQ -1
+#define NIOS_IN_LEFT_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define NIOS_IN_LEFT_IRQ_TYPE "NONE"
+#define NIOS_IN_LEFT_NAME "/dev/nios_in_left"
+#define NIOS_IN_LEFT_RESET_VALUE 0
+#define NIOS_IN_LEFT_SPAN 16
+#define NIOS_IN_LEFT_TYPE "altera_avalon_pio"
+
+
+/*
+ * nios_in_right configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_nios_in_right altera_avalon_pio
+#define NIOS_IN_RIGHT_BASE 0x21030
+#define NIOS_IN_RIGHT_BIT_CLEARING_EDGE_REGISTER 0
+#define NIOS_IN_RIGHT_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define NIOS_IN_RIGHT_CAPTURE 0
+#define NIOS_IN_RIGHT_DATA_WIDTH 16
+#define NIOS_IN_RIGHT_DO_TEST_BENCH_WIRING 0
+#define NIOS_IN_RIGHT_DRIVEN_SIM_VALUE 0
+#define NIOS_IN_RIGHT_EDGE_TYPE "NONE"
+#define NIOS_IN_RIGHT_FREQ 50000000
+#define NIOS_IN_RIGHT_HAS_IN 1
+#define NIOS_IN_RIGHT_HAS_OUT 0
+#define NIOS_IN_RIGHT_HAS_TRI 0
+#define NIOS_IN_RIGHT_IRQ -1
+#define NIOS_IN_RIGHT_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define NIOS_IN_RIGHT_IRQ_TYPE "NONE"
+#define NIOS_IN_RIGHT_NAME "/dev/nios_in_right"
+#define NIOS_IN_RIGHT_RESET_VALUE 0
+#define NIOS_IN_RIGHT_SPAN 16
+#define NIOS_IN_RIGHT_TYPE "altera_avalon_pio"
+
+
+/*
+ * nios_out_left configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_nios_out_left altera_avalon_pio
+#define NIOS_OUT_LEFT_BASE 0x21020
+#define NIOS_OUT_LEFT_BIT_CLEARING_EDGE_REGISTER 0
+#define NIOS_OUT_LEFT_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define NIOS_OUT_LEFT_CAPTURE 0
+#define NIOS_OUT_LEFT_DATA_WIDTH 16
+#define NIOS_OUT_LEFT_DO_TEST_BENCH_WIRING 0
+#define NIOS_OUT_LEFT_DRIVEN_SIM_VALUE 0
+#define NIOS_OUT_LEFT_EDGE_TYPE "NONE"
+#define NIOS_OUT_LEFT_FREQ 50000000
+#define NIOS_OUT_LEFT_HAS_IN 0
+#define NIOS_OUT_LEFT_HAS_OUT 1
+#define NIOS_OUT_LEFT_HAS_TRI 0
+#define NIOS_OUT_LEFT_IRQ -1
+#define NIOS_OUT_LEFT_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define NIOS_OUT_LEFT_IRQ_TYPE "NONE"
+#define NIOS_OUT_LEFT_NAME "/dev/nios_out_left"
+#define NIOS_OUT_LEFT_RESET_VALUE 0
+#define NIOS_OUT_LEFT_SPAN 16
+#define NIOS_OUT_LEFT_TYPE "altera_avalon_pio"
+
+
+/*
+ * nios_out_right configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_nios_out_right altera_avalon_pio
+#define NIOS_OUT_RIGHT_BASE 0x21010
+#define NIOS_OUT_RIGHT_BIT_CLEARING_EDGE_REGISTER 0
+#define NIOS_OUT_RIGHT_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define NIOS_OUT_RIGHT_CAPTURE 0
+#define NIOS_OUT_RIGHT_DATA_WIDTH 16
+#define NIOS_OUT_RIGHT_DO_TEST_BENCH_WIRING 0
+#define NIOS_OUT_RIGHT_DRIVEN_SIM_VALUE 0
+#define NIOS_OUT_RIGHT_EDGE_TYPE "NONE"
+#define NIOS_OUT_RIGHT_FREQ 50000000
+#define NIOS_OUT_RIGHT_HAS_IN 0
+#define NIOS_OUT_RIGHT_HAS_OUT 1
+#define NIOS_OUT_RIGHT_HAS_TRI 0
+#define NIOS_OUT_RIGHT_IRQ -1
+#define NIOS_OUT_RIGHT_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define NIOS_OUT_RIGHT_IRQ_TYPE "NONE"
+#define NIOS_OUT_RIGHT_NAME "/dev/nios_out_right"
+#define NIOS_OUT_RIGHT_RESET_VALUE 0
+#define NIOS_OUT_RIGHT_SPAN 16
+#define NIOS_OUT_RIGHT_TYPE "altera_avalon_pio"
+
+
+/*
+ * redLEDs configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_redLEDs altera_avalon_pio
+#define REDLEDS_BASE 0x210a0
+#define REDLEDS_BIT_CLEARING_EDGE_REGISTER 0
+#define REDLEDS_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define REDLEDS_CAPTURE 0
+#define REDLEDS_DATA_WIDTH 18
+#define REDLEDS_DO_TEST_BENCH_WIRING 0
+#define REDLEDS_DRIVEN_SIM_VALUE 0
+#define REDLEDS_EDGE_TYPE "NONE"
+#define REDLEDS_FREQ 50000000
+#define REDLEDS_HAS_IN 0
+#define REDLEDS_HAS_OUT 1
+#define REDLEDS_HAS_TRI 0
+#define REDLEDS_IRQ -1
+#define REDLEDS_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define REDLEDS_IRQ_TYPE "NONE"
+#define REDLEDS_NAME "/dev/redLEDs"
+#define REDLEDS_RESET_VALUE 0
+#define REDLEDS_SPAN 16
+#define REDLEDS_TYPE "altera_avalon_pio"
+
+
+/*
+ * trebleStageSwitch configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_trebleStageSwitch altera_avalon_pio
+#define TREBLESTAGESWITCH_BASE 0x21050
+#define TREBLESTAGESWITCH_BIT_CLEARING_EDGE_REGISTER 0
+#define TREBLESTAGESWITCH_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define TREBLESTAGESWITCH_CAPTURE 0
+#define TREBLESTAGESWITCH_DATA_WIDTH 2
+#define TREBLESTAGESWITCH_DO_TEST_BENCH_WIRING 0
+#define TREBLESTAGESWITCH_DRIVEN_SIM_VALUE 0
+#define TREBLESTAGESWITCH_EDGE_TYPE "NONE"
+#define TREBLESTAGESWITCH_FREQ 50000000
+#define TREBLESTAGESWITCH_HAS_IN 1
+#define TREBLESTAGESWITCH_HAS_OUT 0
+#define TREBLESTAGESWITCH_HAS_TRI 0
+#define TREBLESTAGESWITCH_IRQ -1
+#define TREBLESTAGESWITCH_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define TREBLESTAGESWITCH_IRQ_TYPE "NONE"
+#define TREBLESTAGESWITCH_NAME "/dev/trebleStageSwitch"
+#define TREBLESTAGESWITCH_RESET_VALUE 0
+#define TREBLESTAGESWITCH_SPAN 16
+#define TREBLESTAGESWITCH_TYPE "altera_avalon_pio"
+
+
+/*
+ * volumeDownButton configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_volumeDownButton altera_avalon_pio
+#define VOLUMEDOWNBUTTON_BASE 0x21080
+#define VOLUMEDOWNBUTTON_BIT_CLEARING_EDGE_REGISTER 0
+#define VOLUMEDOWNBUTTON_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define VOLUMEDOWNBUTTON_CAPTURE 0
+#define VOLUMEDOWNBUTTON_DATA_WIDTH 1
+#define VOLUMEDOWNBUTTON_DO_TEST_BENCH_WIRING 0
+#define VOLUMEDOWNBUTTON_DRIVEN_SIM_VALUE 0
+#define VOLUMEDOWNBUTTON_EDGE_TYPE "NONE"
+#define VOLUMEDOWNBUTTON_FREQ 50000000
+#define VOLUMEDOWNBUTTON_HAS_IN 1
+#define VOLUMEDOWNBUTTON_HAS_OUT 0
+#define VOLUMEDOWNBUTTON_HAS_TRI 0
+#define VOLUMEDOWNBUTTON_IRQ -1
+#define VOLUMEDOWNBUTTON_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define VOLUMEDOWNBUTTON_IRQ_TYPE "NONE"
+#define VOLUMEDOWNBUTTON_NAME "/dev/volumeDownButton"
+#define VOLUMEDOWNBUTTON_RESET_VALUE 0
+#define VOLUMEDOWNBUTTON_SPAN 16
+#define VOLUMEDOWNBUTTON_TYPE "altera_avalon_pio"
+
+
+/*
+ * volumeUpButton configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_volumeUpButton altera_avalon_pio
+#define VOLUMEUPBUTTON_BASE 0x21090
+#define VOLUMEUPBUTTON_BIT_CLEARING_EDGE_REGISTER 0
+#define VOLUMEUPBUTTON_BIT_MODIFYING_OUTPUT_REGISTER 0
+#define VOLUMEUPBUTTON_CAPTURE 0
+#define VOLUMEUPBUTTON_DATA_WIDTH 1
+#define VOLUMEUPBUTTON_DO_TEST_BENCH_WIRING 0
+#define VOLUMEUPBUTTON_DRIVEN_SIM_VALUE 0
+#define VOLUMEUPBUTTON_EDGE_TYPE "NONE"
+#define VOLUMEUPBUTTON_FREQ 50000000
+#define VOLUMEUPBUTTON_HAS_IN 1
+#define VOLUMEUPBUTTON_HAS_OUT 0
+#define VOLUMEUPBUTTON_HAS_TRI 0
+#define VOLUMEUPBUTTON_IRQ -1
+#define VOLUMEUPBUTTON_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define VOLUMEUPBUTTON_IRQ_TYPE "NONE"
+#define VOLUMEUPBUTTON_NAME "/dev/volumeUpButton"
+#define VOLUMEUPBUTTON_RESET_VALUE 0
+#define VOLUMEUPBUTTON_SPAN 16
+#define VOLUMEUPBUTTON_TYPE "altera_avalon_pio"
+
+#endif /* __SYSTEM_H_ */

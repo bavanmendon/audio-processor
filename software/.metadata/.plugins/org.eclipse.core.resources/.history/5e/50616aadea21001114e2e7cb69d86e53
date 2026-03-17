@@ -1,0 +1,269 @@
+//#include "altera_up_avalon_audio.h"
+#include "altera_avalon_pio_regs.h"
+#include "system.h"
+#include "io.h"
+#include "stdint.h"
+
+//#include "sys/alt_stdio.h"
+
+#define NIOS_DATA_READY_BASE 0x21000
+#define NIOS_IN_LEFT_BASE 0x21040
+#define NIOS_IN_RIGHT_BASE 0x21030
+#define NIOS_OUT_LEFT_BASE 0x21020
+#define NIOS_OUT_RIGHT_BASE 0x21010
+
+
+/*********************** TEST ********************************/
+
+int main() {
+    int32_t l_bass_prev = 0, r_bass_prev = 0;
+
+    while(1) {
+        // ========================================================
+        // PHASE 1: LRC is HIGH (1)
+        // LEFT channel is actively shifting in hardware. (DO NOT TOUCH)
+        // RIGHT channel is completely shifted in and stable!
+        // ========================================================
+        while(IORD_ALTERA_AVALON_PIO_DATA(NIOS_DATA_READY_BASE) == 0);
+
+        // Read the stable RIGHT input
+        int16_t r_in = (int16_t)IORD_ALTERA_AVALON_PIO_DATA(NIOS_IN_RIGHT_BASE);
+
+        // Read the EQ switches (1x, 2x, 3x, 4x multipliers)
+        int b_stage = IORD_ALTERA_AVALON_PIO_DATA(BASSSTAGESWITCH_BASE) & 0x03;
+        int t_stage = IORD_ALTERA_AVALON_PIO_DATA(TREBLESTAGESWITCH_BASE) & 0x03;
+
+        // Fast DSP Math for RIGHT channel (Shifted by 8 for fractional precision)
+        int32_t r_in_f = r_in << 8;
+        r_bass_prev = r_bass_prev + ((r_in_f - r_bass_prev) >> 3);
+        int32_t r_bass = r_bass_prev >> 8;
+        int32_t r_treble = r_in - r_bass;
+
+        int32_t r_res = (r_bass * (b_stage + 1)) + (r_treble * (t_stage + 1));
+        if(r_res > 32767) r_res = 32767; else if(r_res < -32768) r_res = -32768;
+
+        // Write RIGHT output. The VHDL safely holds this until the end of the frame!
+        IOWR_ALTERA_AVALON_PIO_DATA(NIOS_OUT_RIGHT_BASE, (int16_t)r_res);
+
+
+        // ========================================================
+        // PHASE 2: LRC is LOW (0)
+        // RIGHT channel is actively shifting in hardware. (DO NOT TOUCH)
+        // LEFT channel is completely shifted in and stable!
+        // ========================================================
+        while(IORD_ALTERA_AVALON_PIO_DATA(NIOS_DATA_READY_BASE) == 1);
+
+        // Read the stable LEFT input
+        int16_t l_in = (int16_t)IORD_ALTERA_AVALON_PIO_DATA(NIOS_IN_LEFT_BASE);
+
+        // Fast DSP Math for LEFT channel
+        int32_t l_in_f = l_in << 8;
+        l_bass_prev = l_bass_prev + ((l_in_f - l_bass_prev) >> 3);
+        int32_t l_bass = l_bass_prev >> 8;
+        int32_t l_treble = l_in - l_bass;
+
+        int32_t l_res = (l_bass * (b_stage + 1)) + (l_treble * (t_stage + 1));
+        if(l_res > 32767) l_res = 32767; else if(l_res < -32768) l_res = -32768;
+
+        // Write LEFT output.
+        IOWR_ALTERA_AVALON_PIO_DATA(NIOS_OUT_LEFT_BASE, (int16_t)l_res);
+
+        // (At the exact end of this phase, your VHDL flawlessly latches
+        // both Left and Right DAC registers simultaneously!)
+    }
+    return 0;
+}
+
+/******************* FAST IIR ******************************/
+
+//int main() {
+//    int16_t l_in = 0, r_in = 0;
+//
+//    // Using 32-bit integers for the accumulators prevents overflow during math!
+//    int32_t l_out_accum = 0;
+//    int32_t r_out_accum = 0;
+//
+//    uint8_t current_ready = 0;
+//    uint8_t last_ready = 0;
+//
+//    printf("Starting Fast IIR Filter...\n");
+//
+//    while (1) {
+//        current_ready = IORD_ALTERA_AVALON_PIO_DATA(NIOS_DATA_READY_BASE);
+//
+//        // TRIGGER EXACTLY ONCE PER FRAME (Rising Edge only)
+//        if (current_ready == 1 && last_ready == 0) {
+//
+//            // 1. Read raw inputs
+//            int16_t l_in = IORD_ALTERA_AVALON_PIO_DATA(NIOS_IN_LEFT_BASE);
+//            int16_t r_in = IORD_ALTERA_AVALON_PIO_DATA(NIOS_IN_RIGHT_BASE);
+//
+//            // 2. TRUE FIXED-POINT IIR MATH
+//            // SHIFT factor acts as your cutoff frequency.
+//            // 3 = Light filter, 5 = Heavy bass-only filter
+//            #define SHIFT 4
+//
+//            // Add the new sample, and subtract the scaled output
+//            l_out_accum = l_out_accum + l_in - (l_out_accum >> SHIFT);
+//            r_out_accum = r_out_accum + r_in - (r_out_accum >> SHIFT);
+//
+//            // 3. Scale back down to 16-bit for the DAC output
+//            int16_t l_out = (int16_t)(l_out_accum >> SHIFT);
+//            int16_t r_out = (int16_t)(r_out_accum >> SHIFT);
+//
+//            // 4. Write to hardware
+//            IOWR_ALTERA_AVALON_PIO_DATA(NIOS_OUT_LEFT_BASE, l_out);
+//            IOWR_ALTERA_AVALON_PIO_DATA(NIOS_OUT_RIGHT_BASE, r_out);
+//        }
+//
+//        last_ready = current_ready;
+//    }
+//    return 0;
+//}
+
+///*********************** Separate alphas *****************************************/
+
+//int main()
+//{
+//	// 1. INDEPENDENT CROSSOVERS
+//	// alpha_bass at 0.95 = Heavy, slow filter (Isolates deep sub-bass)
+//	float alpha_bass = 0.9f;
+//	// alpha_treble at 0.60 = Fast filter (Isolates only the highest cymbals/sizzle)
+//	float alpha_treble = 0.9f;
+//
+//	// 2. Volume Multipliers for Switch States (0, 1, 2, and 3)
+//	// 0=Mute, 1=Half, 2=Normal, 3=Double (Boost)
+//	float multipliers[4] = {0.0f, 0.5f, 1.0f, 2.0f};
+//
+//	// Memory for the Bass Filter
+//	static float l_bass_prev = 0.0f;
+//	static float r_bass_prev = 0.0f;
+//
+//	// NEW: Memory for the Treble Filter
+//	static float l_treble_prev = 0.0f;
+//	static float r_treble_prev = 0.0f;
+//
+//	while(1)
+//	{
+//		// 3. Read the switches and clamp them to 0-3 using a bitmask (& 0x03)
+//		int b_stage = IORD_ALTERA_AVALON_PIO_DATA(BASSSTAGESWITCH_BASE) & 0x03;
+//		int t_stage = IORD_ALTERA_AVALON_PIO_DATA(TREBLESTAGESWITCH_BASE) & 0x03;
+//
+//		// 4. Wait for the new audio sample flag
+//		if(IORD_ALTERA_AVALON_PIO_DATA(NIOS_DATA_READY_BASE) == 1)
+//		{
+//			int16_t l_data = (int16_t)IORD_ALTERA_AVALON_PIO_DATA(NIOS_IN_LEFT_BASE);
+//			int16_t r_data = (int16_t)IORD_ALTERA_AVALON_PIO_DATA(NIOS_IN_RIGHT_BASE);
+//
+//			float l_in = (float)l_data;
+//			float r_in = (float)r_data;
+//
+//			// --- THE 3-BAND DSP CROSSOVER EQ ---
+//
+//			// A. Extract the DEEP Bass
+//			float l_bass = (alpha_bass * l_bass_prev) + ((1.0f - alpha_bass) * l_in);
+//			float r_bass = (alpha_bass * r_bass_prev) + ((1.0f - alpha_bass) * r_in);
+//
+//			// B. Extract the CRISP Treble
+//			// First, create a temporary filter that catches everything EXCEPT the highest highs
+//			float l_mid_catcher = (alpha_treble * l_treble_prev) + ((1.0f - alpha_treble) * l_in);
+//			float r_mid_catcher = (alpha_treble * r_treble_prev) + ((1.0f - alpha_treble) * r_in);
+//
+//			// Subtract that from the original audio to get pure Treble
+//			float l_treble = l_in - l_mid_catcher;
+//			float r_treble = r_in - r_mid_catcher;
+//
+//			// C. Extract the Mids (Vocals, Snare Drums, Guitars)
+//			// This untouched audio sits perfectly between the Bass and Treble
+//			float l_mid = l_in - l_bass - l_treble;
+//			float r_mid = r_in - r_bass - r_treble;
+//
+//			// D. Apply the volume multipliers from the physical switches!
+//			// Notice how the 'mid' channel has no multiplier attached to it.
+//			float l_out_float = (l_bass * multipliers[b_stage]) + l_mid + (l_treble * multipliers[t_stage]);
+//			float r_out_float = (r_bass * multipliers[b_stage]) + r_mid + (r_treble * multipliers[t_stage]);
+//
+//			// Save the states for the next loop
+//			l_bass_prev = l_bass;
+//			r_bass_prev = r_bass;
+//			l_treble_prev = l_mid_catcher;
+//			r_treble_prev = r_mid_catcher;
+//
+//			// Cast back to 16-bit integers
+//			int16_t l_out = (int16_t)l_out_float;
+//			int16_t r_out = (int16_t)r_out_float;
+//
+//			// 5. Send to speakers
+//			IOWR_ALTERA_AVALON_PIO_DATA(NIOS_OUT_LEFT_BASE, l_out);
+//			IOWR_ALTERA_AVALON_PIO_DATA(NIOS_OUT_RIGHT_BASE, r_out);
+//
+//			// 6. Wait for the flag to drop
+//			while(IORD_ALTERA_AVALON_PIO_DATA(NIOS_DATA_READY_BASE) == 1) { }
+//		}
+//	}
+//	return 0;
+//}
+
+
+/***************************Working Filters********************************/
+
+//int main()
+//{
+//	// 1. FIXED-POINT ALPHA (Scaled by 256)
+//	// 217 / 256 = 0.847 (Almost exactly your 0.85f!)
+//	int32_t alpha = 217;
+//	int32_t inv_alpha = 39;
+//
+//	// 2. FIXED-POINT MULTIPLIERS (Scaled by 256)
+//	// 0=Mute, 128=Half, 256=Normal(1.0x), 512=Boost(2.0x)
+//	int32_t multipliers[4] = {0, 128, 256, 512};
+//
+//	static int32_t l_bass_prev = 0;
+//	static int32_t r_bass_prev = 0;
+//
+//	while(1)
+//	{
+//		// 3. Wait for the new audio sample flag
+//		if(IORD_ALTERA_AVALON_PIO_DATA(NIOS_DATA_READY_BASE) == 1)
+//		{
+//			// Read switches
+//			int b_stage = IORD_ALTERA_AVALON_PIO_DATA(BASSSTAGESWITCH_BASE) & 0x03;
+//			int t_stage = IORD_ALTERA_AVALON_PIO_DATA(TREBLESTAGESWITCH_BASE) & 0x03;
+//
+//			// Read raw data directly into 32-bit integers
+//			int32_t l_in = (int16_t)IORD_ALTERA_AVALON_PIO_DATA(NIOS_IN_LEFT_BASE);
+//			int32_t r_in = (int16_t)IORD_ALTERA_AVALON_PIO_DATA(NIOS_IN_RIGHT_BASE);
+//
+//			// --- THE LIGHTNING-FAST INTEGER CROSSOVER ---
+//			// Multiply by our whole numbers, then >> 8 divides by 256 instantly
+//			int32_t l_bass = ((alpha * l_bass_prev) + (inv_alpha * l_in)) >> 8;
+//			int32_t r_bass = ((alpha * r_bass_prev) + (inv_alpha * r_in)) >> 8;
+//
+//			int32_t l_treble = l_in - l_bass;
+//			int32_t r_treble = r_in - r_bass;
+//
+//			// Save the bass state for the next loop
+//			l_bass_prev = l_bass;
+//			r_bass_prev = r_bass;
+//
+//			// Apply multipliers and shift down (>> 8 divides by 256 to scale volume)
+//			int32_t l_out = ((l_bass * multipliers[b_stage]) + (l_treble * multipliers[t_stage])) >> 8;
+//			int32_t r_out = ((r_bass * multipliers[b_stage]) + (r_treble * multipliers[t_stage])) >> 8;
+//
+//			// --- FAST LIMITER ---
+//			if(l_out > 32767) l_out = 32767;
+//			else if(l_out < -32768) l_out = -32768;
+//
+//			if(r_out > 32767) r_out = 32767;
+//			else if(r_out < -32768) r_out = -32768;
+//
+//			// 4. Send to speakers
+//			IOWR_ALTERA_AVALON_PIO_DATA(NIOS_OUT_LEFT_BASE, (int16_t)l_out);
+//			IOWR_ALTERA_AVALON_PIO_DATA(NIOS_OUT_RIGHT_BASE, (int16_t)r_out);
+//
+//			// 5. Wait for the flag to drop
+//			while(IORD_ALTERA_AVALON_PIO_DATA(NIOS_DATA_READY_BASE) == 1) { }
+//		}
+//	}
+//	return 0;
+//}

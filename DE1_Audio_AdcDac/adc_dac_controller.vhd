@@ -19,7 +19,15 @@ entity adc_dac_controller is port (
 		adcLRSelect : out std_logic;
 		dacLRSelect : out std_logic;
 		adcData : in std_logic;
-		dacData : out std_logic) ;
+		dacData : out std_logic;
+		
+		-- NIOS Bridge Ports
+		audio_to_nios_left : out std_logic_vector(15 downto 0);
+		audio_to_nios_right : out std_logic_vector(15 downto 0);
+		audio_from_nios_left : in std_logic_vector(15 downto 0);
+		audio_from_nios_right : in std_logic_vector(15 downto 0);
+		data_ready_flag : out std_logic
+	);
 end entity;
 
 architecture behavioral of adc_dac_controller is
@@ -38,6 +46,8 @@ architecture behavioral of adc_dac_controller is
 	signal waveCounter : integer range 0 to 47;
 	signal sineWave, squareWave : integer range -32768 to 32767;
 	
+	signal dataCount_prev : std_logic := '0';
+	signal pulse_reg      : std_logic := '0';
 	
 begin
 	-- generate bit clock
@@ -98,14 +108,22 @@ begin
 					if LRCounter = 31 then
 						LRCounter <= 0;
 						dataCount <= '1';
-						-- select between square and sine
-						if waveSelect = '1' then
-							dacDataLeftChannelRegister <= std_logic_vector(to_signed(squareWave,16));
-							dacDataRightChannelRegister <= std_logic_vector(to_signed(squareWave,16));
-						else
-							dacDataLeftChannelRegister <= std_logic_vector(to_signed(sineWave,16));
-							dacDataRightChannelRegister <= std_logic_vector(to_signed(sineWave,16));
-						end if;						
+--						-- select between square and sine
+--						if waveSelect = '1' then
+--							dacDataLeftChannelRegister <= std_logic_vector(to_signed(squareWave,16));
+--							dacDataRightChannelRegister <= std_logic_vector(to_signed(squareWave,16));
+--						else
+--							dacDataLeftChannelRegister <= std_logic_vector(to_signed(sineWave,16));
+--							dacDataRightChannelRegister <= std_logic_vector(to_signed(sineWave,16));
+--						end if;						
+						
+						-- 1. Send ADC data to NIOS
+						audio_to_nios_left <= adcDataLeftChannelRegister;
+						audio_to_nios_right <= adcDataRightChannelRegister;
+						
+						-- 2. Grab filtered DAC data from NIOS
+						dacDataLeftChannelRegister <= audio_from_nios_left;
+						dacDataRightChannelRegister <= audio_from_nios_right;
 					end if;									
 				end if;
 			end if;
@@ -278,5 +296,12 @@ with waveCounter select
     -8657 when 45,
     -4368 when 46,
     0 when 47;
+	 
+	-- --- THE BULLETPROOF SYNC FIX ---
+	-- By mapping the flag directly to the Left/Right channel clock, 
+	-- we give the Nios II a massive, stable 50% duty-cycle wave to read.
+	-- It is mathematically impossible for the Nios to miss this!
+	
+	data_ready_flag <= internalLRSelect;
 
 end behavioral;

@@ -1,0 +1,9 @@
+12:03:19 **** Incremental Build of configuration Nios II for project audioEqualizer ****
+make all 
+Info: Building ../audioEqualizer_bsp/
+make --no-print-directory -C ../audioEqualizer_bsp/
+[BSP build complete]
+[audioEqualizer build complete]
+
+12:03:19 Build Finished (took 616ms)
+

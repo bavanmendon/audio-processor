@@ -16,8 +16,8 @@ use ieee.numeric_std.all;
 entity audio_codec_controller is port(
 	reset : in std_logic;
 	clock : in std_logic;
-	vol_up : in std_logic;					-- From audioProcessor
-	vol_down : in std_logic;				-- From audioProcessor
+	vol_up : in std_logic;					-- From volumeControl
+	vol_down : in std_logic;				-- From volumeControl
 	scl : out std_logic;
 	sda : inout std_logic;
 	stateOut : out integer range 0 to 7;

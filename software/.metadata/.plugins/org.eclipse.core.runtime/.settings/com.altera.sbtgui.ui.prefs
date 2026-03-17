@@ -1,0 +1,4 @@
+eclipse.preferences.version=1
+newSoftwareExampleWizardPage.defaultLocation=/home/bavanmendon/intelFPGA_lite/audioProcessor/software/audioEqualizer
+newSoftwareExampleWizardPage.sopcinfoFile=/home/bavanmendon/intelFPGA_lite/audioProcessor/audioProcessor.sopcinfo
+newSoftwareExampleWizardPage2.newBspLocation=/home/bavanmendon/intelFPGA_lite/audioProcessor/software/audioEqualizer_bsp

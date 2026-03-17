@@ -8,6 +8,10 @@ Progress: Adding NIOSAudioProcessor [altera_nios2_gen2 18.1]
 Progress: Parameterizing module NIOSAudioProcessor
 Progress: Adding SRAM [altera_avalon_onchip_memory2 18.1]
 Progress: Parameterizing module SRAM
+Progress: Adding audioConfig [altera_up_avalon_audio_and_video_config 18.0]
+Progress: Parameterizing module audioConfig
+Progress: Adding audioCore [altera_up_avalon_audio 18.0]
+Progress: Parameterizing module audioCore
 Progress: Adding bassStageSwitch [altera_avalon_pio 18.1]
 Progress: Parameterizing module bassStageSwitch
 Progress: Adding clk_50 [clock_source 18.1]
@@ -16,6 +20,16 @@ Progress: Adding greenLEDs [altera_avalon_pio 18.1]
 Progress: Parameterizing module greenLEDs
 Progress: Adding muteButton [altera_avalon_pio 18.1]
 Progress: Parameterizing module muteButton
+Progress: Adding nios_data_ready [altera_avalon_pio 18.1]
+Progress: Parameterizing module nios_data_ready
+Progress: Adding nios_in_left [altera_avalon_pio 18.1]
+Progress: Parameterizing module nios_in_left
+Progress: Adding nios_in_right [altera_avalon_pio 18.1]
+Progress: Parameterizing module nios_in_right
+Progress: Adding nios_out_left [altera_avalon_pio 18.1]
+Progress: Parameterizing module nios_out_left
+Progress: Adding nios_out_right [altera_avalon_pio 18.1]
+Progress: Parameterizing module nios_out_right
 Progress: Adding redLEDs [altera_avalon_pio 18.1]
 Progress: Parameterizing module redLEDs
 Progress: Adding trebleStageSwitch [altera_avalon_pio 18.1]
@@ -24,6 +38,8 @@ Progress: Adding volumeDownButton [altera_avalon_pio 18.1]
 Progress: Parameterizing module volumeDownButton
 Progress: Adding volumeUpButton [altera_avalon_pio 18.1]
 Progress: Parameterizing module volumeUpButton
+Progress: Adding wm8731_i2c [altera_avalon_i2c 18.1]
+Progress: Parameterizing module wm8731_i2c
 Progress: Building connections
 Progress: Parameterizing connections
 Progress: Validating
@@ -31,6 +47,9 @@ Progress: Done reading input file
 Info: audioProcessor.JTAG: JTAG UART IP input clock need to be at least double (2x) the operating frequency of JTAG TCK on board
 Info: audioProcessor.bassStageSwitch: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
 Info: audioProcessor.muteButton: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: audioProcessor.nios_data_ready: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: audioProcessor.nios_in_left: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: audioProcessor.nios_in_right: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
 Info: audioProcessor.trebleStageSwitch: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
 Info: audioProcessor.volumeDownButton: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
 Info: audioProcessor.volumeUpButton: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
@@ -47,6 +66,10 @@ Progress: Adding NIOSAudioProcessor [altera_nios2_gen2 18.1]
 Progress: Parameterizing module NIOSAudioProcessor
 Progress: Adding SRAM [altera_avalon_onchip_memory2 18.1]
 Progress: Parameterizing module SRAM
+Progress: Adding audioConfig [altera_up_avalon_audio_and_video_config 18.0]
+Progress: Parameterizing module audioConfig
+Progress: Adding audioCore [altera_up_avalon_audio 18.0]
+Progress: Parameterizing module audioCore
 Progress: Adding bassStageSwitch [altera_avalon_pio 18.1]
 Progress: Parameterizing module bassStageSwitch
 Progress: Adding clk_50 [clock_source 18.1]
@@ -55,6 +78,16 @@ Progress: Adding greenLEDs [altera_avalon_pio 18.1]
 Progress: Parameterizing module greenLEDs
 Progress: Adding muteButton [altera_avalon_pio 18.1]
 Progress: Parameterizing module muteButton
+Progress: Adding nios_data_ready [altera_avalon_pio 18.1]
+Progress: Parameterizing module nios_data_ready
+Progress: Adding nios_in_left [altera_avalon_pio 18.1]
+Progress: Parameterizing module nios_in_left
+Progress: Adding nios_in_right [altera_avalon_pio 18.1]
+Progress: Parameterizing module nios_in_right
+Progress: Adding nios_out_left [altera_avalon_pio 18.1]
+Progress: Parameterizing module nios_out_left
+Progress: Adding nios_out_right [altera_avalon_pio 18.1]
+Progress: Parameterizing module nios_out_right
 Progress: Adding redLEDs [altera_avalon_pio 18.1]
 Progress: Parameterizing module redLEDs
 Progress: Adding trebleStageSwitch [altera_avalon_pio 18.1]
@@ -63,6 +96,8 @@ Progress: Adding volumeDownButton [altera_avalon_pio 18.1]
 Progress: Parameterizing module volumeDownButton
 Progress: Adding volumeUpButton [altera_avalon_pio 18.1]
 Progress: Parameterizing module volumeUpButton
+Progress: Adding wm8731_i2c [altera_avalon_i2c 18.1]
+Progress: Parameterizing module wm8731_i2c
 Progress: Building connections
 Progress: Parameterizing connections
 Progress: Validating
@@ -70,33 +105,48 @@ Progress: Done reading input file
 Info: audioProcessor.JTAG: JTAG UART IP input clock need to be at least double (2x) the operating frequency of JTAG TCK on board
 Info: audioProcessor.bassStageSwitch: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
 Info: audioProcessor.muteButton: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: audioProcessor.nios_data_ready: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: audioProcessor.nios_in_left: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: audioProcessor.nios_in_right: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
 Info: audioProcessor.trebleStageSwitch: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
 Info: audioProcessor.volumeDownButton: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
 Info: audioProcessor.volumeUpButton: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
 Info: audioProcessor: Generating audioProcessor "audioProcessor" for QUARTUS_SYNTH
 Info: JTAG: Starting RTL generation for module 'audioProcessor_JTAG'
-Info: JTAG:   Generation command is [exec /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=audioProcessor_JTAG --dir=/tmp/alt0516_3410466214204504594.dir/0002_JTAG_gen/ --quartus_dir=/home/bavanmendon/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt0516_3410466214204504594.dir/0002_JTAG_gen//audioProcessor_JTAG_component_configuration.pl  --do_build_sim=0  ]
+Info: JTAG:   Generation command is [exec /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=audioProcessor_JTAG --dir=/tmp/alt0524_3815095567217553710.dir/0002_JTAG_gen/ --quartus_dir=/home/bavanmendon/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt0524_3815095567217553710.dir/0002_JTAG_gen//audioProcessor_JTAG_component_configuration.pl  --do_build_sim=0  ]
 Info: JTAG: Done RTL generation for module 'audioProcessor_JTAG'
 Info: JTAG: "audioProcessor" instantiated altera_avalon_jtag_uart "JTAG"
 Info: NIOSAudioProcessor: "audioProcessor" instantiated altera_nios2_gen2 "NIOSAudioProcessor"
 Info: SRAM: Starting RTL generation for module 'audioProcessor_SRAM'
-Info: SRAM:   Generation command is [exec /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=audioProcessor_SRAM --dir=/tmp/alt0516_3410466214204504594.dir/0003_SRAM_gen/ --quartus_dir=/home/bavanmendon/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt0516_3410466214204504594.dir/0003_SRAM_gen//audioProcessor_SRAM_component_configuration.pl  --do_build_sim=0  ]
+Info: SRAM:   Generation command is [exec /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=audioProcessor_SRAM --dir=/tmp/alt0524_3815095567217553710.dir/0003_SRAM_gen/ --quartus_dir=/home/bavanmendon/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt0524_3815095567217553710.dir/0003_SRAM_gen//audioProcessor_SRAM_component_configuration.pl  --do_build_sim=0  ]
 Info: SRAM: Done RTL generation for module 'audioProcessor_SRAM'
 Info: SRAM: "audioProcessor" instantiated altera_avalon_onchip_memory2 "SRAM"
+Info: audioConfig: Starting Generation of Audio and Video Config
+Info: audioConfig: "audioProcessor" instantiated altera_up_avalon_audio_and_video_config "audioConfig"
+Info: audioCore: Starting Generation of Audio Controller
+Info: audioCore: "audioProcessor" instantiated altera_up_avalon_audio "audioCore"
 Info: bassStageSwitch: Starting RTL generation for module 'audioProcessor_bassStageSwitch'
-Info: bassStageSwitch:   Generation command is [exec /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=audioProcessor_bassStageSwitch --dir=/tmp/alt0516_3410466214204504594.dir/0004_bassStageSwitch_gen/ --quartus_dir=/home/bavanmendon/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt0516_3410466214204504594.dir/0004_bassStageSwitch_gen//audioProcessor_bassStageSwitch_component_configuration.pl  --do_build_sim=0  ]
+Info: bassStageSwitch:   Generation command is [exec /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=audioProcessor_bassStageSwitch --dir=/tmp/alt0524_3815095567217553710.dir/0006_bassStageSwitch_gen/ --quartus_dir=/home/bavanmendon/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt0524_3815095567217553710.dir/0006_bassStageSwitch_gen//audioProcessor_bassStageSwitch_component_configuration.pl  --do_build_sim=0  ]
 Info: bassStageSwitch: Done RTL generation for module 'audioProcessor_bassStageSwitch'
 Info: bassStageSwitch: "audioProcessor" instantiated altera_avalon_pio "bassStageSwitch"
 Info: greenLEDs: Starting RTL generation for module 'audioProcessor_greenLEDs'
-Info: greenLEDs:   Generation command is [exec /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=audioProcessor_greenLEDs --dir=/tmp/alt0516_3410466214204504594.dir/0005_greenLEDs_gen/ --quartus_dir=/home/bavanmendon/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt0516_3410466214204504594.dir/0005_greenLEDs_gen//audioProcessor_greenLEDs_component_configuration.pl  --do_build_sim=0  ]
+Info: greenLEDs:   Generation command is [exec /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=audioProcessor_greenLEDs --dir=/tmp/alt0524_3815095567217553710.dir/0007_greenLEDs_gen/ --quartus_dir=/home/bavanmendon/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt0524_3815095567217553710.dir/0007_greenLEDs_gen//audioProcessor_greenLEDs_component_configuration.pl  --do_build_sim=0  ]
 Info: greenLEDs: Done RTL generation for module 'audioProcessor_greenLEDs'
 Info: greenLEDs: "audioProcessor" instantiated altera_avalon_pio "greenLEDs"
 Info: muteButton: Starting RTL generation for module 'audioProcessor_muteButton'
-Info: muteButton:   Generation command is [exec /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=audioProcessor_muteButton --dir=/tmp/alt0516_3410466214204504594.dir/0006_muteButton_gen/ --quartus_dir=/home/bavanmendon/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt0516_3410466214204504594.dir/0006_muteButton_gen//audioProcessor_muteButton_component_configuration.pl  --do_build_sim=0  ]
+Info: muteButton:   Generation command is [exec /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=audioProcessor_muteButton --dir=/tmp/alt0524_3815095567217553710.dir/0008_muteButton_gen/ --quartus_dir=/home/bavanmendon/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt0524_3815095567217553710.dir/0008_muteButton_gen//audioProcessor_muteButton_component_configuration.pl  --do_build_sim=0  ]
 Info: muteButton: Done RTL generation for module 'audioProcessor_muteButton'
 Info: muteButton: "audioProcessor" instantiated altera_avalon_pio "muteButton"
+Info: nios_in_left: Starting RTL generation for module 'audioProcessor_nios_in_left'
+Info: nios_in_left:   Generation command is [exec /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=audioProcessor_nios_in_left --dir=/tmp/alt0524_3815095567217553710.dir/0009_nios_in_left_gen/ --quartus_dir=/home/bavanmendon/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt0524_3815095567217553710.dir/0009_nios_in_left_gen//audioProcessor_nios_in_left_component_configuration.pl  --do_build_sim=0  ]
+Info: nios_in_left: Done RTL generation for module 'audioProcessor_nios_in_left'
+Info: nios_in_left: "audioProcessor" instantiated altera_avalon_pio "nios_in_left"
+Info: nios_out_left: Starting RTL generation for module 'audioProcessor_nios_out_left'
+Info: nios_out_left:   Generation command is [exec /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=audioProcessor_nios_out_left --dir=/tmp/alt0524_3815095567217553710.dir/0010_nios_out_left_gen/ --quartus_dir=/home/bavanmendon/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt0524_3815095567217553710.dir/0010_nios_out_left_gen//audioProcessor_nios_out_left_component_configuration.pl  --do_build_sim=0  ]
+Info: nios_out_left: Done RTL generation for module 'audioProcessor_nios_out_left'
+Info: nios_out_left: "audioProcessor" instantiated altera_avalon_pio "nios_out_left"
 Info: redLEDs: Starting RTL generation for module 'audioProcessor_redLEDs'
-Info: redLEDs:   Generation command is [exec /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=audioProcessor_redLEDs --dir=/tmp/alt0516_3410466214204504594.dir/0007_redLEDs_gen/ --quartus_dir=/home/bavanmendon/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt0516_3410466214204504594.dir/0007_redLEDs_gen//audioProcessor_redLEDs_component_configuration.pl  --do_build_sim=0  ]
+Info: redLEDs:   Generation command is [exec /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/bin/perl -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/perl/lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/common -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=audioProcessor_redLEDs --dir=/tmp/alt0524_3815095567217553710.dir/0011_redLEDs_gen/ --quartus_dir=/home/bavanmendon/intelFPGA_lite/18.1/quartus --verilog --config=/tmp/alt0524_3815095567217553710.dir/0011_redLEDs_gen//audioProcessor_redLEDs_component_configuration.pl  --do_build_sim=0  ]
 Info: redLEDs: Done RTL generation for module 'audioProcessor_redLEDs'
 Info: redLEDs: "audioProcessor" instantiated altera_avalon_pio "redLEDs"
 Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
@@ -109,38 +159,45 @@ Info: avalon_st_adapter_006: Inserting error_adapter: error_adapter_0
 Info: avalon_st_adapter_007: Inserting error_adapter: error_adapter_0
 Info: avalon_st_adapter_008: Inserting error_adapter: error_adapter_0
 Info: avalon_st_adapter_009: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_010: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_011: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_012: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_013: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_014: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_015: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_016: Inserting error_adapter: error_adapter_0
 Info: mm_interconnect_0: "audioProcessor" instantiated altera_mm_interconnect "mm_interconnect_0"
 Info: irq_mapper: "audioProcessor" instantiated altera_irq_mapper "irq_mapper"
 Info: rst_controller: "audioProcessor" instantiated altera_reset_controller "rst_controller"
 Info: cpu: Starting RTL generation for module 'audioProcessor_NIOSAudioProcessor_cpu'
-Info: cpu:   Generation command is [exec /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64//eperlcmd -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64//perl/lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/cpu_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/nios_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2 -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2 -- /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/generate_rtl.epl --name=audioProcessor_NIOSAudioProcessor_cpu --dir=/tmp/alt0516_3410466214204504594.dir/0010_cpu_gen/ --quartus_bindir=/home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/ --verilog --config=/tmp/alt0516_3410466214204504594.dir/0010_cpu_gen//audioProcessor_NIOSAudioProcessor_cpu_processor_configuration.pl  --do_build_sim=0  ]
-Info: cpu: # 2026.03.04 11:09:17 (*) Starting Nios II generation
-Info: cpu: # 2026.03.04 11:09:17 (*)   Checking for plaintext license.
-Info: cpu: # 2026.03.04 11:09:17 (*)   Couldn't query license setup in Quartus directory /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/
-Info: cpu: # 2026.03.04 11:09:17 (*)   Defaulting to contents of LM_LICENSE_FILE environment variable
-Info: cpu: # 2026.03.04 11:09:17 (*)   LM_LICENSE_FILE environment variable is empty
-Info: cpu: # 2026.03.04 11:09:17 (*)   Plaintext license not found.
-Info: cpu: # 2026.03.04 11:09:17 (*)   No license required to generate encrypted Nios II/e.
-Info: cpu: # 2026.03.04 11:09:17 (*)   Elaborating CPU configuration settings
-Info: cpu: # 2026.03.04 11:09:18 (*)   Creating all objects for CPU
-Info: cpu: # 2026.03.04 11:09:18 (*)   Generating RTL from CPU objects
-Info: cpu: # 2026.03.04 11:09:18 (*)   Creating plain-text RTL
-Info: cpu: # 2026.03.04 11:09:19 (*) Done Nios II generation
+Info: cpu:   Generation command is [exec /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64//eperlcmd -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64//perl/lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/europa -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin/perl_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/sopc_builder/bin -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/cpu_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/nios_lib -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2 -I /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2 -- /home/bavanmendon/intelFPGA_lite/18.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/generate_rtl.epl --name=audioProcessor_NIOSAudioProcessor_cpu --dir=/tmp/alt0524_3815095567217553710.dir/0014_cpu_gen/ --quartus_bindir=/home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/ --verilog --config=/tmp/alt0524_3815095567217553710.dir/0014_cpu_gen//audioProcessor_NIOSAudioProcessor_cpu_processor_configuration.pl  --do_build_sim=0  ]
+Info: cpu: # 2026.03.12 13:05:39 (*) Starting Nios II generation
+Info: cpu: # 2026.03.12 13:05:39 (*)   Checking for plaintext license.
+Info: cpu: # 2026.03.12 13:05:40 (*)   Couldn't query license setup in Quartus directory /home/bavanmendon/intelFPGA_lite/18.1/quartus/linux64/
+Info: cpu: # 2026.03.12 13:05:40 (*)   Defaulting to contents of LM_LICENSE_FILE environment variable
+Info: cpu: # 2026.03.12 13:05:40 (*)   LM_LICENSE_FILE environment variable is empty
+Info: cpu: # 2026.03.12 13:05:40 (*)   Plaintext license not found.
+Info: cpu: # 2026.03.12 13:05:40 (*)   No license required to generate encrypted Nios II/e.
+Info: cpu: # 2026.03.12 13:05:40 (*)   Elaborating CPU configuration settings
+Info: cpu: # 2026.03.12 13:05:40 (*)   Creating all objects for CPU
+Info: cpu: # 2026.03.12 13:05:42 (*)   Generating RTL from CPU objects
+Info: cpu: # 2026.03.12 13:05:42 (*)   Creating plain-text RTL
+Info: cpu: # 2026.03.12 13:05:43 (*) Done Nios II generation
 Info: cpu: Done RTL generation for module 'audioProcessor_NIOSAudioProcessor_cpu'
 Info: cpu: "NIOSAudioProcessor" instantiated altera_nios2_gen2_unit "cpu"
 Info: NIOSAudioProcessor_data_master_translator: "mm_interconnect_0" instantiated altera_merlin_master_translator "NIOSAudioProcessor_data_master_translator"
-Info: JTAG_avalon_jtag_slave_translator: "mm_interconnect_0" instantiated altera_merlin_slave_translator "JTAG_avalon_jtag_slave_translator"
+Info: audioCore_avalon_audio_slave_translator: "mm_interconnect_0" instantiated altera_merlin_slave_translator "audioCore_avalon_audio_slave_translator"
 Info: NIOSAudioProcessor_data_master_agent: "mm_interconnect_0" instantiated altera_merlin_master_agent "NIOSAudioProcessor_data_master_agent"
-Info: JTAG_avalon_jtag_slave_agent: "mm_interconnect_0" instantiated altera_merlin_slave_agent "JTAG_avalon_jtag_slave_agent"
-Info: JTAG_avalon_jtag_slave_agent_rsp_fifo: "mm_interconnect_0" instantiated altera_avalon_sc_fifo "JTAG_avalon_jtag_slave_agent_rsp_fifo"
+Info: audioCore_avalon_audio_slave_agent: "mm_interconnect_0" instantiated altera_merlin_slave_agent "audioCore_avalon_audio_slave_agent"
+Info: audioCore_avalon_audio_slave_agent_rsp_fifo: "mm_interconnect_0" instantiated altera_avalon_sc_fifo "audioCore_avalon_audio_slave_agent_rsp_fifo"
 Info: router: "mm_interconnect_0" instantiated altera_merlin_router "router"
 Info: router_001: "mm_interconnect_0" instantiated altera_merlin_router "router_001"
 Info: router_002: "mm_interconnect_0" instantiated altera_merlin_router "router_002"
-Info: router_003: "mm_interconnect_0" instantiated altera_merlin_router "router_003"
+Info: router_005: "mm_interconnect_0" instantiated altera_merlin_router "router_005"
 Info: cmd_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux"
 Info: cmd_demux_001: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux_001"
 Info: cmd_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux"
-Info: cmd_mux_001: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux_001"
+Info: cmd_mux_003: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux_003"
 Info: Reusing file /home/bavanmendon/intelFPGA_lite/audioProcessor/audioProcessor/synthesis/submodules/altera_merlin_arbitrator.sv
 Info: rsp_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "rsp_demux"
 Info: rsp_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "rsp_mux"
@@ -149,6 +206,6 @@ Info: rsp_mux_001: "mm_interconnect_0" instantiated altera_merlin_multiplexer "r
 Info: Reusing file /home/bavanmendon/intelFPGA_lite/audioProcessor/audioProcessor/synthesis/submodules/altera_merlin_arbitrator.sv
 Info: avalon_st_adapter: "mm_interconnect_0" instantiated altera_avalon_st_adapter "avalon_st_adapter"
 Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
-Info: audioProcessor: Done "audioProcessor" with 30 modules, 43 files
+Info: audioProcessor: Done "audioProcessor" with 34 modules, 66 files
 Info: qsys-generate succeeded.
 Info: Finished: Create HDL design files for synthesis

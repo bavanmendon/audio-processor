@@ -43,7 +43,37 @@ end DE1_Audio_AdcDac;
 architecture topLevel of DE1_Audio_AdcDac is
 
 	component audioProcessor is
-		PORT(clk, rst, volumeUpButton, volumeDownButton, muteButton : IN std_logic;
+		port (
+--			audio_config_external_SDAT  : inout std_logic                     := 'X';             
+--			audio_config_external_SCLK  : out   std_logic;                                        
+--			audio_core_external_ADCDAT  : in    std_logic                     := 'X';             
+--			audio_core_external_ADCLRCK : in    std_logic                     := 'X';             
+--			audio_core_external_BCLK    : in    std_logic                     := 'X';             
+--			audio_core_external_DACDAT  : out   std_logic;                                        
+--			audio_core_external_DACLRCK : in    std_logic                     := 'X';             
+			bass_stage_switch_export    : in    std_logic_vector(1 downto 0)  := (others => 'X'); 
+			clk_clk                     : in    std_logic                     := 'X';             
+			green_leds_export           : out   std_logic_vector(7 downto 0);                     
+--			i2c_master_serial_sda_in    : in    std_logic                     := 'X';             
+--			i2c_master_serial_scl_in    : in    std_logic                     := 'X';             
+--			i2c_master_serial_sda_oe    : out   std_logic;                                        
+--			i2c_master_serial_scl_oe    : out   std_logic;                                        
+			mute_button_export          : in    std_logic                     := 'X';             
+			red_leds_export             : out   std_logic_vector(17 downto 0);                    
+			reset_reset_n               : in    std_logic                     := 'X'; -- YOUR NEW RESET 
+			treble_stage_switch_export  : in    std_logic_vector(1 downto 0)  := (others => 'X'); 
+			volume_down_button_export   : in    std_logic                     := 'X';             
+			volume_up_button_export     : in    std_logic                     := 'X';
+			nios_data_ready_external_connection_export : in    std_logic                     := 'X';             -- export
+			nios_in_left_external_connection_export   : in    std_logic_vector(15 downto 0) := (others => 'X'); -- export
+			nios_in_right_external_connection_export  : in    std_logic_vector(15 downto 0) := (others => 'X'); -- export
+			nios_out_left_external_connection_export  : out   std_logic_vector(15 downto 0);                    -- export
+			nios_out_right_external_connection_export : out   std_logic_vector(15 downto 0)                     -- export
+		);
+	end component audioProcessor;
+
+	component volumeControl is
+		PORT(clk, rst, volumeUpButton, volumeDownButton, muteButton : IN std_logic;    -- clk, rst #changed
 				bassStageSwitch, trebleStageSwitch : IN std_logic_vector(1 DOWNTO 0);
 				vol_up_out, vol_down_out : OUT std_logic;	-- NEW PORTS
 				greenLEDs : OUT std_logic_vector(7 DOWNTO 0);
@@ -54,8 +84,8 @@ architecture topLevel of DE1_Audio_AdcDac is
 	component audio_codec_controller is port(
 		reset : in std_logic;
 		clock : in std_logic;
-		vol_up : in std_logic;					-- From audioProcessor
-		vol_down : in std_logic;				-- From audioProcessor
+		vol_up : in std_logic;					-- From volumeControl
+		vol_down : in std_logic;				-- From volumeControl
 		scl : out std_logic;
 		sda : inout std_logic;
 		stateOut : out integer range 0 to 7;
@@ -94,7 +124,15 @@ architecture topLevel of DE1_Audio_AdcDac is
 		adcLRSelect : out std_logic;
 		dacLRSelect : out std_logic;
 		adcData : in std_logic;
-		dacData : out std_logic) ;
+		dacData : out std_logic;
+		
+		-- NIOS Bridge Ports
+		audio_to_nios_left : out std_logic_vector(15 downto 0);
+		audio_to_nios_right : out std_logic_vector(15 downto 0);
+		audio_from_nios_left : in std_logic_vector(15 downto 0);
+		audio_from_nios_right : in std_logic_vector(15 downto 0);
+		data_ready_flag : out std_logic
+		);
 	end component;
 	
 	signal i2cClock,audioClock,clock50MHz : std_logic := '0';
@@ -106,25 +144,29 @@ architecture topLevel of DE1_Audio_AdcDac is
 	signal heartbeatCounter : unsigned(23 DOWNTO 0) := (OTHERS => '0');
 	
 	signal current_vol : std_logic_vector(6 downto 0);
-	
-	signal vol_up_edge, vol_down_edge : std_logic;
-	
+	signal vol_up_edge, vol_down_edge : std_logic;	
 	signal is_muted_sig : std_logic;
+	
+	signal nios_audio_in_left : std_logic_vector(15 downto 0);
+	signal nios_audio_in_right : std_logic_vector(15 downto 0);
+	signal nios_audio_out_left : std_logic_vector(15 downto 0);
+	signal nios_audio_out_right : std_logic_vector(15 downto 0);
+	signal nios_data_ready : std_logic;
 	
 begin
 	-- clock buffer to avoid clock skews
-	clockBuffer50MHz : clockBuffer port map(not SW(0),CLOCK_50,clock50MHz);
+	clockBuffer50MHz : clockBuffer port map(not SW(0),CLOCK_50,clock50MHz);		-- #change not sw(0)	'0'
 	
-	audioCodecController : audio_codec_controller port map (SW(0),clock50MHz,vol_up_edge,vol_down_edge,i2cClock,I2C_SDAT,stateOut, current_vol, is_muted_sig);
+	audioCodecController : audio_codec_controller port map (SW(0),clock50MHz,vol_up_edge,vol_down_edge,i2cClock,I2C_SDAT,stateOut, current_vol, is_muted_sig);	-- #change sw(0)
 	-- we only start the audio controller below long (40 ms) after we reset the system
 	-- the reason is that transmitting all the i2c data takes at least 19 ms (20 KHz clock)
-	adcDacControllerStartDelay : delayCounter port map (SW(0),clock50MHz,resetAdcDac);
+	adcDacControllerStartDelay : delayCounter port map (SW(0),clock50MHz,resetAdcDac);			-- #change sw(0)	'1'
 	
 	
 	-- we will use a PLL to generate the necessary 18.432 MHz Audio Control clock
-	audioPllClockGen : audioPLL port map (not resetAdcDac,CLOCK_50,audioClock);		-- #change CLOCK_27(0)
+	audioPllClockGen : audioPLL port map (not resetAdcDac,CLOCK_50,audioClock);		-- #change CLOCK_27(0)	'1'
 	
-	adcDacController : adc_dac_controller port map (resetAdcDac,SW(8),SW(9),audioClock,bitClock,adcLRC,AUD_DACLRCK,adcDat,dacDat);
+	adcDacController : adc_dac_controller port map (resetAdcDac,SW(8),SW(9),audioClock,bitClock,adcLRC,AUD_DACLRCK,adcDat,dacDat,nios_audio_in_left,nios_audio_in_right,nios_audio_out_left,nios_audio_out_right,nios_data_ready);
 	-- send out the clocks
 	I2C_SCLK <= i2cClock;
 	AUD_BCLK <= bitClock;
@@ -162,7 +204,40 @@ begin
 				  "0010010" when 5, -- stop
 				  "1111111" when others; -- should not occur
 				  
-	buttonLogic: audioProcessor port map (
+	nios_brain: audioProcessor port map (
+		clk_clk                     => CLOCK_50,
+		reset_reset_n               => SW(0), -- Wakes up the CPU!
+		
+		-- UI Connections
+		volume_up_button_export     => KEY(3),
+		volume_down_button_export   => KEY(2),
+		mute_button_export          => KEY(1),
+		bass_stage_switch_export    => SW(2 DOWNTO 1),
+		treble_stage_switch_export  => SW(4 DOWNTO 3),
+		green_leds_export           => open,
+		red_leds_export             => open, -- Let your VHDL volumeControl handle Red LEDs
+		
+		-- Safely tying off the Qsys Audio/I2C so it doesn't fight your VHDL
+--		audio_config_external_SDAT  => open,
+--		audio_config_external_SCLK  => open,
+--		audio_core_external_ADCDAT  => AUD_ADCDAT,
+--		audio_core_external_ADCLRCK => AUD_ADCLRCK,
+--		audio_core_external_BCLK    => AUD_BCLK,
+--		audio_core_external_DACDAT  => AUD_DACDAT,
+--		audio_core_external_DACLRCK => AUD_DACLRCK,
+		
+		nios_data_ready_external_connection_export => nios_data_ready,
+		nios_in_left_external_connection_export => nios_audio_in_left,
+		nios_in_right_external_connection_export => nios_audio_in_right,
+		nios_out_left_external_connection_export => nios_audio_out_left,
+		nios_out_right_external_connection_export => nios_audio_out_right
+--		i2c_master_serial_sda_in    => '0',
+--		i2c_master_serial_scl_in    => '0',
+--		i2c_master_serial_sda_oe    => open,
+--		i2c_master_serial_scl_oe    => open
+	);
+				  
+	buttonLogic: volumeControl port map (
 				clk => clock50MHz,
 				rst => SW(0),
 				volumeUpButton => KEY(3),

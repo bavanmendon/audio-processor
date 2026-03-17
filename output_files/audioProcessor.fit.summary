@@ -1,16 +1,16 @@
-Fitter Status : Successful - Fri Mar  6 15:30:49 2026
+Fitter Status : Successful - Tue Mar 17 12:01:23 2026
 Quartus Prime Version : 18.1.1 Build 646 04/11/2019 SJ Lite Edition
 Revision Name : audioProcessor
 Top-level Entity Name : DE1_Audio_AdcDac
 Family : Cyclone IV E
 Device : EP4CE115F29C7
 Timing Models : Final
-Total logic elements : 505 / 114,480 ( < 1 % )
-    Total combinational functions : 492 / 114,480 ( < 1 % )
-    Dedicated logic registers : 222 / 114,480 ( < 1 % )
-Total registers : 222
+Total logic elements : 2,442 / 114,480 ( 2 % )
+    Total combinational functions : 2,220 / 114,480 ( 2 % )
+    Dedicated logic registers : 1,399 / 114,480 ( 1 % )
+Total registers : 1399
 Total pins : 115 / 529 ( 22 % )
 Total virtual pins : 0
-Total memory bits : 0 / 3,981,312 ( 0 % )
+Total memory bits : 338,944 / 3,981,312 ( 9 % )
 Embedded Multiplier 9-bit elements : 0 / 532 ( 0 % )
 Total PLLs : 2 / 4 ( 50 % )
