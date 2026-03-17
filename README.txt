@@ -17,3 +17,9 @@ Added First Order Low Pass IIR filter for Bass filtering on software.
 Added High Pass Filter for Treble filtering on software.
 Added three stage intensity for Bass
 Added three stage filtering for Treble.
+
+Version: v2.1
+Type: Minor Update
+Message:
+Removed old commented code.
+Added commented code only to check raw data.

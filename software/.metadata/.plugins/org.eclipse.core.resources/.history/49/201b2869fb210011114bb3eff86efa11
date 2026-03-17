@@ -1,0 +1,162 @@
+//#include "altera_up_avalon_audio.h"
+#include "altera_avalon_pio_regs.h"
+#include "system.h"
+#include "io.h"
+#include "stdint.h"
+
+//#include "sys/alt_stdio.h"
+
+#define NIOS_DATA_READY_BASE 0x21000
+#define NIOS_IN_LEFT_BASE 0x21040
+#define NIOS_IN_RIGHT_BASE 0x21030
+#define NIOS_OUT_LEFT_BASE 0x21020
+#define NIOS_OUT_RIGHT_BASE 0x21010
+
+/*********************** TEST *******************/
+
+int main() {
+    uint8_t current_ready = 0;
+    uint8_t last_ready = 0;
+
+    // We need TWO accumulators now: one for Left, one for Right
+    int32_t l_bass_prev = 0;
+//    int32_t r_bass_prev = 0;
+
+    while (1) {
+        // Read the live state of the Word Clock
+        current_ready = IORD_ALTERA_AVALON_PIO_DATA(NIOS_DATA_READY_BASE);
+
+        // Trigger exactly once per audio frame (Rising Edge)
+        if (current_ready == 1 && last_ready == 0) {
+
+            // 1. Read BOTH Inputs
+            int16_t l_in = (int16_t)IORD_ALTERA_AVALON_PIO_DATA(NIOS_IN_LEFT_BASE);
+//            int16_t r_in = (int16_t)IORD_ALTERA_AVALON_PIO_DATA(NIOS_IN_RIGHT_BASE);
+
+            // 2. Read EQ Switches (0, 1, 2, or 3)
+            int b_stage = IORD_ALTERA_AVALON_PIO_DATA(BASSSTAGESWITCH_BASE) & 0x03;
+            int t_stage = IORD_ALTERA_AVALON_PIO_DATA(TREBLESTAGESWITCH_BASE) & 0x03;
+
+            // ==========================================
+            // 3. Process LEFT Channel
+            // ==========================================
+            int32_t l_in_scaled = l_in << 8;
+            l_bass_prev = l_bass_prev + ((l_in_scaled - l_bass_prev) >> 3); // LPF
+            int32_t l_bass = l_bass_prev >> 8;
+            int32_t l_treble = l_in - l_bass;                               // HPF
+
+            // Multiply and Mix
+            int32_t l_res = (l_bass * (b_stage + 1)) + (l_treble * (t_stage + 1));
+
+            // Anti-Clipping Limiter
+            if(l_res > 32767) l_res = 32767;
+            else if(l_res < -32768) l_res = -32768;
+
+
+            // ==========================================
+            // 4. Process RIGHT Channel
+            // ==========================================
+//            int32_t r_in_scaled = r_in << 8;
+//            r_bass_prev = r_bass_prev + ((r_in_scaled - r_bass_prev) >> 3); // LPF
+//            int32_t r_bass = r_bass_prev >> 8;
+//            int32_t r_treble = r_in - r_bass;                               // HPF
+
+            // Multiply and Mix
+//            int32_t r_res = (r_bass * (b_stage + 1)) + (r_treble * (t_stage + 1));
+
+            // Anti-Clipping Limiter
+//            if(r_res > 32767) r_res = 32767;
+//            else if(r_res < -32768) r_res = -32768;
+
+
+            // ==========================================
+            // 5. Write Outputs safely to VHDL holding registers
+            // ==========================================
+            IOWR_ALTERA_AVALON_PIO_DATA(NIOS_OUT_LEFT_BASE, (int16_t)l_res);
+            IOWR_ALTERA_AVALON_PIO_DATA(NIOS_OUT_RIGHT_BASE, (int16_t)l_res);
+        }
+
+        // Save the state to wait for the next frame
+        last_ready = current_ready;
+    }
+
+    return 0;
+}
+
+/*************** WORKING CODE (FAST DSP) ***********************/
+
+int main() {
+    uint8_t current_ready = 0;
+    uint8_t last_ready = 0;
+
+    // We only need one accumulator since we are doing Mono audio!
+    int32_t bass_prev = 0;
+
+    while (1) {
+        current_ready = IORD_ALTERA_AVALON_PIO_DATA(NIOS_DATA_READY_BASE);
+
+        // Trigger exactly once per full audio frame (Rising Edge)
+        if (current_ready == 1 && last_ready == 0) {
+
+            // 1. Read ONLY the Left Input
+            int16_t audio_in = (int16_t)IORD_ALTERA_AVALON_PIO_DATA(NIOS_IN_LEFT_BASE);
+
+            // 2. Read Switches (0, 1, 2, or 3)
+            int b_stage = IORD_ALTERA_AVALON_PIO_DATA(BASSSTAGESWITCH_BASE) & 0x03;
+            int t_stage = IORD_ALTERA_AVALON_PIO_DATA(TREBLESTAGESWITCH_BASE) & 0x03;
+
+            // 3. Fast DSP Crossover Math
+            int32_t in_scaled = audio_in << 8;
+            bass_prev = bass_prev + ((in_scaled - bass_prev) >> 3);
+            int32_t bass = bass_prev >> 8;
+            int32_t treble = audio_in - bass;
+
+            // Multiply by (Stage + 1) to get 1x, 2x, 3x, 4x volume boosts
+            int32_t res = (bass * (b_stage + 1)) + (treble * (t_stage + 1));
+
+            // 4. Anti-Clipping Limiter
+            if(res > 32767) res = 32767;
+            else if(res < -32768) res = -32768;
+
+            // 5. Write the exact same audio to BOTH speakers
+            IOWR_ALTERA_AVALON_PIO_DATA(NIOS_OUT_LEFT_BASE, (int16_t)res);
+            IOWR_ALTERA_AVALON_PIO_DATA(NIOS_OUT_RIGHT_BASE, (int16_t)res);
+        }
+
+        // Save the state to wait for the next frame
+        last_ready = current_ready;
+    }
+
+    return 0;
+}
+
+
+/*********************** RAW INPUT AND RAW OUTPUT ********************************/
+
+//int main() {
+//    uint8_t current_ready = 0;
+//    uint8_t last_ready = 0;
+//
+//    while (1) {
+//        // Read the live state of the Word Clock
+//        current_ready = IORD_ALTERA_AVALON_PIO_DATA(NIOS_DATA_READY_BASE);
+//
+//        // Trigger exactly once per audio frame (Rising Edge)
+//        if (current_ready == 1 && last_ready == 0) {
+//
+//            // 1. Read bare input
+//            int16_t l_in = (int16_t)IORD_ALTERA_AVALON_PIO_DATA(NIOS_IN_LEFT_BASE);
+////            int16_t r_in = (int16_t)IORD_ALTERA_AVALON_PIO_DATA(NIOS_IN_RIGHT_BASE);
+//
+//            // 2. Write bare output
+//            IOWR_ALTERA_AVALON_PIO_DATA(NIOS_OUT_LEFT_BASE, l_in);
+//            IOWR_ALTERA_AVALON_PIO_DATA(NIOS_OUT_RIGHT_BASE, l_in);
+//        }
+//
+//        // Save the state to wait for the next frame
+//        last_ready = current_ready;
+//    }
+//
+//    return 0;
+//}
+

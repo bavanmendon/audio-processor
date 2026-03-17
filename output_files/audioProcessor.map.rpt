@@ -1,5 +1,5 @@
 Analysis & Synthesis report for audioProcessor
-Tue Mar 17 12:01:01 2026
+Tue Mar 17 12:50:40 2026
 Quartus Prime Version 18.1.1 Build 646 04/11/2019 SJ Lite Edition
 
 
@@ -289,7 +289,7 @@ https://fpgasoftware.intel.com/eula.
 +----------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                     ;
 +------------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Tue Mar 17 12:01:01 2026       ;
+; Analysis & Synthesis Status        ; Successful - Tue Mar 17 12:50:40 2026       ;
 ; Quartus Prime Version              ; 18.1.1 Build 646 04/11/2019 SJ Lite Edition ;
 ; Revision Name                      ; audioProcessor                              ;
 ; Top-level Entity Name              ; DE1_Audio_AdcDac                            ;
@@ -7887,7 +7887,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 18.1.1 Build 646 04/11/2019 SJ Lite Edition
-    Info: Processing started: Tue Mar 17 12:00:25 2026
+    Info: Processing started: Tue Mar 17 12:50:01 2026
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off audioProcessor -c audioProcessor
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 4 of the 4 processors detected
@@ -8355,7 +8355,7 @@ Info (12128): Elaborating entity "volumeControl" for hierarchy "volumeControl:bu
 Warning (10036): Verilog HDL or VHDL warning at volumeControl.vhd(36): object "data_in" assigned a value but never read File: /home/bavanmendon/intelFPGA_lite/audioProcessor/audioProcessor/volumeControl.vhd Line: 36
 Warning (10036): Verilog HDL or VHDL warning at volumeControl.vhd(42): object "shift_up_clk" assigned a value but never read File: /home/bavanmendon/intelFPGA_lite/audioProcessor/audioProcessor/volumeControl.vhd Line: 42
 Info (11170): Starting IP generation for the debug fabric: alt_sld_fab.
-Info (11172): 2026.03.17.12:00:45 Progress: Loading sld8aeba865/alt_sld_fab_wrapper_hw.tcl
+Info (11172): 2026.03.17.12:50:21 Progress: Loading sld8aeba865/alt_sld_fab_wrapper_hw.tcl
 Info (11172): Alt_sld_fab.alt_sld_fab: SLD fabric agents which did not specify prefer_host were connected to JTAG
 Info (11172): Alt_sld_fab: Generating alt_sld_fab "alt_sld_fab" for QUARTUS_SYNTH
 Info (11172): Alt_sld_fab: "alt_sld_fab" instantiated alt_sld_fab "alt_sld_fab"
@@ -8471,10 +8471,10 @@ Info (21057): Implemented 2938 device resources after synthesis - the final reso
     Info (21064): Implemented 176 RAM segments
     Info (21065): Implemented 2 PLLs
 Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 92 warnings
-    Info: Peak virtual memory: 1161 megabytes
-    Info: Processing ended: Tue Mar 17 12:01:01 2026
-    Info: Elapsed time: 00:00:36
-    Info: Total CPU time (on all processors): 00:01:05
+    Info: Peak virtual memory: 1130 megabytes
+    Info: Processing ended: Tue Mar 17 12:50:40 2026
+    Info: Elapsed time: 00:00:39
+    Info: Total CPU time (on all processors): 00:01:19
 
 
 +------------------------------------------+

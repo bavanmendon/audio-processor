@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Mar 17, 2026 12:02:20 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1773745340427</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>Mar 17, 2026 12:51:49 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1773748309236</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>/home/bavanmendon/intelFPGA_lite/audioProcessor/software/audioEqualizer_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>../../audioProcessor.sopcinfo</SopcDesignFile>

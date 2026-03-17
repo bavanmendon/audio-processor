@@ -39,7 +39,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  10 .debug_abbrev 000004ab  00000000  00000000  00001d50  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_line   000005c0  00000000  00000000  000021fb  2**0
+ 11 .debug_line   000005c1  00000000  00000000  000021fb  2**0
                   CONTENTS, READONLY, DEBUGGING
  12 .debug_frame  00000150  00000000  00000000  000027bc  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -221,10 +221,10 @@ alt_after_alt_main:
    10058:	003fff06 	br	10058 <alt_after_alt_main>
 
 0001005c <main>:
-#define NIOS_OUT_RIGHT_BASE 0x21010
+//    return 0;
+//}
 
-
-/*********************** TEST ********************************/
+/*************** WORKING CODE (FAST DSP) ***********************/
 
 int main() {
    1005c:	defff604 	addi	sp,sp,-40
@@ -252,10 +252,10 @@ int main() {
             // 2. Read Switches (0, 1, 2, or 3)
             int b_stage = IORD_ALTERA_AVALON_PIO_DATA(BASSSTAGESWITCH_BASE) & 0x03;
    10074:	058000b4 	movhi	r22,2
-#define NIOS_OUT_RIGHT_BASE 0x21010
+//    return 0;
+//}
 
-
-/*********************** TEST ********************************/
+/*************** WORKING CODE (FAST DSP) ***********************/
 
 int main() {
    10078:	dcc00315 	stw	r19,12(sp)
@@ -272,7 +272,7 @@ int main() {
     int32_t bass_prev = 0;
    10094:	0027883a 	mov	r19,zero
 
-/*********************** TEST ********************************/
+/*************** WORKING CODE (FAST DSP) ***********************/
 
 int main() {
     uint8_t current_ready = 0;
@@ -298,10 +298,10 @@ int main() {
             int b_stage = IORD_ALTERA_AVALON_PIO_DATA(BASSSTAGESWITCH_BASE) & 0x03;
    100a8:	b5841804 	addi	r22,r22,4192
    100ac:	00000106 	br	100b4 <main+0x58>
-#define NIOS_OUT_RIGHT_BASE 0x21010
+//    return 0;
+//}
 
-
-/*********************** TEST ********************************/
+/*************** WORKING CODE (FAST DSP) ***********************/
 
 int main() {
    100b0:	8007883a 	mov	r3,r16
